@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
     public Animator anim;
     public GameObject playerModel;
     public CharacterController charController;
-    
+
     public static PlayerController instance;
 
     public float moveSpeed;
@@ -13,18 +13,17 @@ public class PlayerController : MonoBehaviour
     public float rotateSpeed;
     public float gravityScale = 5f;
 
-    private Camera theCamera;
     private Vector3 moveDirection;
 
     private void Awake()
     {
         instance = this;
     }
-    void Start()
-    {
-        theCamera = Camera.main;
-    }
 
+    private void Start()
+    {   
+        playerModel.transform.Rotate(0f, 180f, 0f);
+    }
     void Update()
     {
 
@@ -51,7 +50,6 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
-            transform.rotation = Quaternion.Euler(0f, theCamera.transform.rotation.eulerAngles.y, 0f);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0f, moveDirection.z));
             playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
         }
