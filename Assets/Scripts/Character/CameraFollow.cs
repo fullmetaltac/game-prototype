@@ -28,12 +28,12 @@ public class CameraFollow : MonoBehaviour
 
     public void IncreaseOffset(Vector3 amount)
     {
-        offset = offset + amount;
+        offset += amount;
     }
 
     public void DecreaseOffset(Vector3 amount)
     {
-        offset = offset - amount;
+        offset -= amount;
     }
 
 }
