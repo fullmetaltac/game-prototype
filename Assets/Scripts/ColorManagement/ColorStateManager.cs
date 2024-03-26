@@ -14,7 +14,6 @@ public class ColorStateManager : MonoBehaviour
 
     public void UpdateColorState(ColorState colorState)
     {
-        Debug.Log("3");
         switch (colorState)
         {
             case ColorState.AQUA:

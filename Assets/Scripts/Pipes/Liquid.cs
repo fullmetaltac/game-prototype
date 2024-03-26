@@ -139,7 +139,7 @@ public class Liquid : MonoBehaviour
         {
             pos = worldPos - transform.position - new Vector3(0, fillAmount, 0);
         }
-        rend.sharedMaterial.SetVector("_FillAmount", pos);
+        //rend.sharedMaterial.SetVector("_FillAmount", pos);
     }
 
     //https://forum.unity.com/threads/manually-calculate-angular-velocity-of-gameobject.289462/#post-4302796
