@@ -1,18 +1,20 @@
 using UnityEngine;
 
 public class FillLiquid : MonoBehaviour
-{    
+{
+    public ColorState waterColor;
     public float fillSpeed = 0.1f;
     public float currentLevel = 0.1f;
 
     private Renderer _renderer;
     private bool _enabled = false;
-    
+
 
     private void Start()
     {
         _renderer = GetComponent<Renderer>();
         _renderer.material.SetFloat("_FillAmount", currentLevel);
+        _renderer.material.color = ColorStateManager.instance.StateToColor(waterColor);
     }
 
     private void Update()
@@ -26,7 +28,8 @@ public class FillLiquid : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player" && Input.GetKeyDown(PlayerConstants.ACTION))
+        var currentColorState = ColorStateManager.colorState;
+        if (other.tag == "Player" && Input.GetKeyDown(PlayerConstants.ACTION) && currentColorState == waterColor)
         {
             _enabled = true;
         }
