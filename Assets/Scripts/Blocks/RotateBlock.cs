@@ -12,7 +12,7 @@ public class RotateBlock : MonoBehaviour
 
     private float startAngle;
     private float targetAngle;
-    private bool _enabled = true;
+    private bool canRotate = true;
 
 
     private void Start()
@@ -40,9 +40,9 @@ public class RotateBlock : MonoBehaviour
     {
         var playerColorState = ColorStateManager.colorState;
         var platformColorState = colorStateApplier.sourceColor;
-        if (other.tag == "Player" && Input.GetKeyDown(PlayerConstants.ACTION) && platformColorState == playerColorState && _enabled)
+        if (other.tag == "Player" && Input.GetKeyDown(PlayerConstants.ACTION) && platformColorState == playerColorState && canRotate)
         {
-            _enabled = false;
+            canRotate = false;
             StartCoroutine(RotateObject());
         }
     }
@@ -100,6 +100,6 @@ public class RotateBlock : MonoBehaviour
         startAngle = targetAngle;
         targetAngle += iterationAngle;
 
-        _enabled = true;
+        canRotate = true;
     }
 }

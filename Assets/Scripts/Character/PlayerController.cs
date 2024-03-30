@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -12,6 +13,14 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public float rotateSpeed;
     public float gravityScale = 5f;
+    private bool canDoubleJump = true;
+
+    // dash
+    public float dashAmount = 3f;
+    public float dashDuration = 0.15f;
+    public float dashCooldown = 1.0f;
+    private bool isDashing = false;
+    private bool canDash = true;
 
     private Vector3 moveDirection;
 
@@ -21,17 +30,22 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Start()
-    {   
+    {
         playerModel.transform.Rotate(0f, 180f, 0f);
     }
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
 
         float yStore = moveDirection.y;
         moveDirection = (transform.forward * Input.GetAxisRaw("Vertical")) + (transform.right * Input.GetAxisRaw("Horizontal"));
         moveDirection.Normalize();
         moveDirection *= moveSpeed;
         moveDirection.y = yStore;
+
 
         if (charController.isGrounded)
         {
@@ -40,13 +54,27 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 moveDirection.y = jumpForce;
+                canDoubleJump = true;
             }
-
+        }
+        else if (!charController.isGrounded && canDoubleJump)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                canDoubleJump = false;
+                moveDirection.y = 0f;
+                moveDirection.y = jumpForce;
+            }
         }
 
         moveDirection.y += Physics.gravity.y * Time.deltaTime * gravityScale;
 
         charController.Move(moveDirection * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
 
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
@@ -56,7 +84,48 @@ public class PlayerController : MonoBehaviour
 
         anim.SetFloat("Speed", Mathf.Abs(moveDirection.x) + Mathf.Abs(moveDirection.z));
         anim.SetBool("Grounded", charController.isGrounded);
-
     }
 
+    private void Jump()
+    {
+        if (charController.isGrounded)
+        {
+            moveDirection.y = 0f;
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                moveDirection.y = jumpForce;
+                canDoubleJump = true;
+            }
+        }
+        else if (!charController.isGrounded && canDoubleJump)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                canDoubleJump = false;
+                moveDirection.y = 0f;
+                moveDirection.y = jumpForce;
+            }
+        }
+
+        moveDirection.y += Physics.gravity.y * Time.deltaTime * gravityScale;
+    }
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        float startTime = Time.time;
+        while (Time.time < startTime + dashDuration)
+        {
+            var dashDirection = new Vector3(moveDirection.x, 0, moveDirection.z);
+            charController.Move((dashDirection + dashDirection * dashAmount) * Time.deltaTime);
+            yield return null;
+        }
+
+        isDashing = false;
+
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
 }
