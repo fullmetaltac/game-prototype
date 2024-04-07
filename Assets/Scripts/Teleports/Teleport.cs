@@ -1,18 +1,46 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class Teleport : MonoBehaviour
 {
     public GameObject player;
     public Transform destination;
 
+    [SerializeField]
+    ColorStateApplier colorStateApplier;
+    private ColorState portalColor;
+    private BoxCollider collirder;
+
     public Vector3 portalDirection = Vector3.back;
+
+    private void Start()
+    {
+        collirder = GetComponent<BoxCollider>();
+        colorStateApplier = GetComponent<ColorStateApplier>();
+        portalColor = colorStateApplier.sourceColor;
+    }
+
+    private void Update()
+    {
+        if (ColorStateManager.colorState == portalColor)
+        {
+            collirder.isTrigger = true;
+        }
+        else
+        {
+            collirder.isTrigger = false;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && PlayerController.instance.canTeleport)
+        var playerColorState = ColorStateManager.colorState;
+        if (other.tag == "Player" && PlayerController.instance.canTeleport && playerColorState == portalColor)
         {
-            StartCoroutine(TeleportAction());
+            if (destination != null)
+            {
+                StartCoroutine(TeleportAction());
+            }
         }
     }
 
@@ -31,11 +59,12 @@ public class Teleport : MonoBehaviour
             Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
             player.transform.position = destination.position + positionOffset;
             PlayerController.instance.SetTeleportVector(portalDirection);
+            PlayerController.instance.moveSpeed /= 2;
         }
 
         PlayerController.instance.canTeleport = false;
         yield return new WaitForSeconds(TeleportConstants.teleportDuration);
         PlayerController.instance.canTeleport = true;
+        PlayerController.instance.moveSpeed *= 2;
     }
-
 }
