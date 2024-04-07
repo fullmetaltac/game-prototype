@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class RotateBlock : MonoBehaviour
 {
+    [Range(-1, 1)]
+    [SerializeField]
+    public int rotationDirection = 1;
+
     public int iterationAngle = 90;
     public float rotationTime = 0.5f;
     public RotationAxis rotationAxis = RotationAxis.Y;
@@ -54,7 +58,7 @@ public class RotateBlock : MonoBehaviour
 
         while (elapsedTime < rotationTime)
         {
-            float angle = Mathf.Lerp(startAngle, startAngle + rotationAmount, elapsedTime / rotationTime);
+            float angle = rotationDirection * Mathf.Lerp(startAngle, startAngle + rotationAmount, elapsedTime / rotationTime);
 
             switch (rotationAxis)
             {
@@ -76,13 +80,13 @@ public class RotateBlock : MonoBehaviour
         switch (rotationAxis)
         {
             case RotationAxis.Y:
-                transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+                transform.rotation = Quaternion.Euler(0, rotationDirection * targetAngle, 0);
                 break;
             case RotationAxis.X:
-                transform.rotation = Quaternion.Euler(targetAngle, 0, 0);
+                transform.rotation = Quaternion.Euler(rotationDirection * targetAngle, 0, 0);
                 break;
             case RotationAxis.Z:
-                transform.rotation = Quaternion.Euler(0, 0, targetAngle);
+                transform.rotation = Quaternion.Euler(0, 0, rotationDirection * targetAngle);
                 break;
         }
 
