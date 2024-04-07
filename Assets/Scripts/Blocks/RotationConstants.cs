@@ -4,7 +4,3 @@ public enum RotationAxis
     Y = 1,
     Z = 2
 }
-
-public class RotationConstants
-{
-}

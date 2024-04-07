@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     public float rotateSpeed;
     public float gravityScale = 5f;
     private bool canDoubleJump = true;
+
+    //teleport
+    public bool canTeleport = true;
+    private Vector3 teleportVector;
 
     // dash
     public float dashAmount = 3f;
@@ -41,7 +45,16 @@ public class PlayerController : MonoBehaviour
         }
 
         float yStore = moveDirection.y;
-        moveDirection = (transform.forward * Input.GetAxisRaw("Vertical")) + (transform.right * Input.GetAxisRaw("Horizontal"));
+        if (!canTeleport)
+        {
+            moveDirection = teleportVector;
+        }
+        else
+        {
+            float verticalInput = Input.GetAxisRaw("Vertical");
+            float horizontalInput = Input.GetAxisRaw("Horizontal");
+            moveDirection = new Vector3(horizontalInput, 0f, verticalInput);
+        }
         moveDirection.Normalize();
         moveDirection *= moveSpeed;
         moveDirection.y = yStore;
@@ -86,32 +99,12 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Grounded", charController.isGrounded);
     }
 
-    private void Jump()
+    public void SetTeleportVector(Vector3 vector)
     {
-        if (charController.isGrounded)
-        {
-            moveDirection.y = 0f;
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                moveDirection.y = jumpForce;
-                canDoubleJump = true;
-            }
-        }
-        else if (!charController.isGrounded && canDoubleJump)
-        {
-            if (Input.GetButtonDown("Jump"))
-            {
-                canDoubleJump = false;
-                moveDirection.y = 0f;
-                moveDirection.y = jumpForce;
-            }
-        }
-
-        moveDirection.y += Physics.gravity.y * Time.deltaTime * gravityScale;
+        teleportVector = vector;
     }
 
-    private IEnumerator Dash()
+    public IEnumerator Dash()
     {
         canDash = false;
         isDashing = true;
