@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        playerModel.transform.Rotate(0f, 180f, 0f);
+        //playerModel.transform.Rotate(0f, 180f, 0f);
     }
     void Update()
     {
