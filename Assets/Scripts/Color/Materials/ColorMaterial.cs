@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorMaterial : MonoBehaviour
+public class ColorMaterial : MonoBehaviour, IColorSubscriber
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Material material;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        OnColorStateChange();
+    }
+    public void OnColorStateChange()
+    {
+        material.color = ColorUtil.StateToColor(ColorStateManager.colorState);
     }
 }

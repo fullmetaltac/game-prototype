@@ -32,11 +32,11 @@ public class BackpackRotation : MonoBehaviour
         if (Input.GetKeyDown(PlayerConstants.ROTATE_BACKPACK) && canRotate)
         {
             canRotate = false;
-            StartCoroutine(RotateObject());
+            StartCoroutine(RotateBackpack());
         }
     }
 
-    IEnumerator RotateObject()
+    IEnumerator RotateBackpack()
     {
         float safeOffset = 10f;
         float accumulator = 0.0f;
@@ -74,13 +74,12 @@ public class BackpackRotation : MonoBehaviour
             case 0:
                 return ColorState.AQUA;
             case 120:
-                return ColorState.PINK;
+                return ColorState.ORANGE;
             case 240:
                 return ColorState.VIOLET;
             case 360:
                 return ColorState.AQUA;
-            default:
-                throw new Exception("COLOR to ANGLE conversion FAILED!");
         }
+        return ColorState.AQUA;
     }
 }
