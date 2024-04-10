@@ -14,7 +14,7 @@ public class FillLiquid : MonoBehaviour
     {
         _renderer = GetComponent<Renderer>();
         _renderer.material.SetFloat("_FillAmount", currentLevel);
-        _renderer.material.color = ColorStateManager.instance.StateToColor(waterColor);
+        _renderer.material.color = ColorUtil.StateToColor(waterColor);
     }
 
     private void Update()

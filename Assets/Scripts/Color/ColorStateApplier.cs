@@ -12,6 +12,6 @@ public class ColorStateApplier: MonoBehaviour
     void Start()
     {
         _renderer = GetComponent<Renderer>();
-        _renderer.material.color = ColorStateManager.instance.StateToColor(sourceColor);
+        _renderer.material.color = ColorUtil.StateToColor(sourceColor);
     }
 }

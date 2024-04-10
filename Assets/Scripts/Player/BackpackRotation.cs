@@ -1,7 +1,6 @@
+using System;
 using UnityEngine;
 using System.Collections;
-using UnityEditor.PackageManager;
-using System;
 
 public class BackpackRotation : MonoBehaviour
 {
@@ -57,10 +56,7 @@ public class BackpackRotation : MonoBehaviour
 
         transform.RotateAround(transform.position, rotationDirection * transform.up, iterationAngle - accumulator);
 
-        // TODO collapse to one method call
-        ColorStateManager.colorState = AngleToColor(targetAngle);
-        ColorStateManager.instance.NotifySubscribers();
-        ColorStateManager.instance.UpdateColorState(ColorStateManager.colorState);
+        ColorStateManager.instance.UpdateState(AngleToColor(targetAngle));
 
         if (targetAngle >= 360)
         {

@@ -13,14 +13,14 @@ public class ColorSource : MonoBehaviour
     private void Start()
     {
         _renderer = GetComponent<Renderer>();
-        _renderer.material.color = ColorStateManager.instance.StateToColor(sourceColor);
+        _renderer.material.color = ColorUtil.StateToColor(sourceColor);
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player" && Input.GetKeyDown(PlayerConstants.ACTION))
         {
-            ColorStateManager.instance.UpdateColorState(sourceColor);
+            ColorStateManager.instance.UpdateState(sourceColor);
         }
     }
 }
