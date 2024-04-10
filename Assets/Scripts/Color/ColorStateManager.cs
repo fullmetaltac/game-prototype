@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Character part with dynamic color
@@ -14,6 +15,8 @@ public class ColorStateManager : MonoBehaviour
         set => PlayerPrefs.SetInt("COLOR_STATE", (int)value);
     }
 
+    private LightSource[] lightSources;
+
     private void Awake()
     {
         instance = this;
@@ -22,6 +25,16 @@ public class ColorStateManager : MonoBehaviour
     private void Start()
     {
         UpdateColorState(colorState);
+        lightSources = Resources.FindObjectsOfTypeAll<LightSource>();
+        Debug.Log(lightSources.Length);
+    }
+
+    public void NotifySubscribers()
+    {
+        foreach (var lightSorce in lightSources)
+        {
+            lightSorce.UpdateColor();
+        }
     }
 
     public void UpdateColorState(ColorState colorState)

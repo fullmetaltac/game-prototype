@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEditor.PackageManager;
+using System;
 
 public class BackpackRotation : MonoBehaviour
 {
@@ -55,6 +57,10 @@ public class BackpackRotation : MonoBehaviour
 
         transform.RotateAround(transform.position, rotationDirection * transform.up, iterationAngle - accumulator);
 
+        // TODO collapse to one method call
+        ColorStateManager.colorState = AngleToColor(targetAngle);
+        ColorStateManager.instance.NotifySubscribers();
+        ColorStateManager.instance.UpdateColorState(ColorStateManager.colorState);
 
         if (targetAngle >= 360)
         {
@@ -63,5 +69,22 @@ public class BackpackRotation : MonoBehaviour
 
         targetAngle += iterationAngle;
         canRotate = true;
+    }
+
+    private ColorState AngleToColor(float angle)
+    {
+        switch ((int)angle)
+        {
+            case 0:
+                return ColorState.AQUA;
+            case 120:
+                return ColorState.PINK;
+            case 240:
+                return ColorState.VIOLET;
+            case 360:
+                return ColorState.AQUA;
+            default:
+                throw new Exception("COLOR to ANGLE conversion FAILED!");
+        }
     }
 }
