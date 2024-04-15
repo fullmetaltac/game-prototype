@@ -4,15 +4,17 @@ using System.Collections;
 
 public class BackpackController : MonoBehaviour
 {
-    [Range(-1, 1)]
-    [SerializeField]
-    public int rotationDirection = 1;
+    public static BackpackController instance;
+
+    public static int rotationDirection
+    {
+        get => PlayerPrefs.GetInt("ROTATION_DIRECTION", 1);
+        set => PlayerPrefs.SetInt("ROTATION_DIRECTION", value);
+    }
 
     public int anglePerSecond = 240;
     public float rotationTime = 0.5f;
-    private float iterationAngle;
-
-    public static BackpackController instance;
+    private float iterationAngle; // = anglePerSecond * rotationTime
 
     private float startAngle;
     private float targetAngle;
@@ -23,17 +25,17 @@ public class BackpackController : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        iterationAngle = anglePerSecond * rotationTime;
+        var desiredAngle = ColorToAngle(ColorStateManager.colorState);
+        transform.RotateAround(transform.position, rotationDirection * transform.up, desiredAngle);
+        startAngle = transform.localEulerAngles.y;
     }
 
 
     private void Start()
     {
-        startAngle = transform.localEulerAngles.y;
-        iterationAngle = anglePerSecond * rotationTime;
         targetAngle = startAngle + iterationAngle;
     }
-
-
 
     private void Update()
     {
@@ -64,7 +66,8 @@ public class BackpackController : MonoBehaviour
 
         transform.RotateAround(transform.position, rotationDirection * transform.up, iterationAngle - accumulator);
 
-        ColorStateManager.instance.UpdateState(AngleToColor(targetAngle));
+        var color = GetNextColor();
+        ColorStateManager.instance.UpdateState(color);
 
         if (targetAngle >= 360)
         {
@@ -75,6 +78,24 @@ public class BackpackController : MonoBehaviour
         canRotate = true;
     }
 
+    private ColorState GetNextColor()
+    {
+        var value = (int)ColorStateManager.colorState + rotationDirection;
+
+        if (value < 0)
+        {
+            value = Enum.GetNames(typeof(ColorState)).Length - 1;
+            return (ColorState)value;
+        }
+
+        if (value >= Enum.GetNames(typeof(ColorState)).Length)
+        {
+            value = 0;
+            return (ColorState)value;
+        }
+        return (ColorState)value;
+    }
+
     private ColorState AngleToColor(float angle)
     {
         switch ((int)angle)
@@ -82,13 +103,27 @@ public class BackpackController : MonoBehaviour
             case 0:
                 return ColorState.AQUA;
             case 120:
-                return ColorState.ORANGE;
-            case 240:
                 return ColorState.VIOLET;
+            case 240:
+                return ColorState.ORANGE;
             case 360:
                 return ColorState.AQUA;
         }
         return ColorState.AQUA;
+    }
+
+    private float ColorToAngle(ColorState color)
+    {
+        switch (color)
+        {
+            case ColorState.AQUA:
+                return 0;
+            case ColorState.VIOLET:
+                return 120;
+            case ColorState.ORANGE:
+                return 240;
+        }
+        return 0;
     }
 
     public void InverseRotation()

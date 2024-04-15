@@ -3,8 +3,8 @@ using UnityEngine;
 public enum ColorState
 {
     AQUA = 0,
-    ORANGE = 1,
-    VIOLET = 2
+    VIOLET = 1,
+    ORANGE = 2
 }
 
 public class ColorConstants
