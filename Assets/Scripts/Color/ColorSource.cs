@@ -18,9 +18,6 @@ public class ColorSource : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player" && Input.GetKeyDown(PlayerConstants.ACTION))
-        {
-            ColorStateManager.instance.UpdateState(sourceColor);
-        }
+        PlayerUtil.PlayerAction(other , () => ColorStateManager.instance.UpdateState(sourceColor));
     }
 }

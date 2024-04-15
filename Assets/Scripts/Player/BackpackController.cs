@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 
-public class BackpackRotation : MonoBehaviour
+public class BackpackController : MonoBehaviour
 {
     [Range(-1, 1)]
     [SerializeField]
@@ -12,10 +12,18 @@ public class BackpackRotation : MonoBehaviour
     public float rotationTime = 0.5f;
     private float iterationAngle;
 
+    public static BackpackController instance;
+
     private float startAngle;
     private float targetAngle;
 
     private bool canRotate = true;
+
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
 
     private void Start()
@@ -81,5 +89,10 @@ public class BackpackRotation : MonoBehaviour
                 return ColorState.AQUA;
         }
         return ColorState.AQUA;
+    }
+
+    public void InverseRotation()
+    {
+        rotationDirection *= -1;
     }
 }
