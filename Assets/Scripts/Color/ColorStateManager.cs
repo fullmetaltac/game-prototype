@@ -21,6 +21,7 @@ public class ColorStateManager : MonoBehaviour
 
     private void Start()
     {
+        Resources.FindObjectsOfTypeAll<Teleport>().ToList().ForEach(x => subscribers.Add(x));
         Resources.FindObjectsOfTypeAll<ColorMaterial>().ToList().ForEach(x => subscribers.Add(x));
         Resources.FindObjectsOfTypeAll<EmissiveMaterial>().ToList().ForEach(x => subscribers.Add(x));
         NotifySubscribers();

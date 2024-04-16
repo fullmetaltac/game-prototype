@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Teleport : MonoBehaviour
+public class Teleport : MonoBehaviour, IColorSubscriber
 {
     public GameObject player;
     public Transform destination;
@@ -13,14 +13,14 @@ public class Teleport : MonoBehaviour
 
     public Vector3 portalDirection = Vector3.back;
 
-    private void Start()
+    private void Awake()
     {
         collirder = GetComponent<BoxCollider>();
         colorStateApplier = GetComponent<ColorStateApplier>();
         portalColor = colorStateApplier.sourceColor;
     }
 
-    private void Update()
+    public void OnColorStateChange()
     {
         if (ColorStateManager.colorState == portalColor)
         {
