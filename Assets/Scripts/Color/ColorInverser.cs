@@ -10,6 +10,7 @@ public class ColorInverser : MonoBehaviour
         {
             BackpackController.instance.InverseRotation();
             _particleSystem.Play();
-        });
+
+        }, (int)BackpackController.backPackState > 2);
     }
 }

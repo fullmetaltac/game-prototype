@@ -15,9 +15,9 @@ public class PlayerConstants
 
 public class PlayerUtil
 {
-    public static void PlayerAction(Collider other, Action action)
+    public static void PlayerAction(Collider other, Action action, bool condition = true)
     {
-        if (IsTag(other) && Input.GetKeyDown(PlayerConstants.ACTION))
+        if (IsTag(other) && Input.GetKeyDown(PlayerConstants.ACTION) && condition)
         {
             action();
         }

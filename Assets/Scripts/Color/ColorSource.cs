@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// Color source object
@@ -7,17 +6,30 @@ using UnityEngine.UIElements;
 public class ColorSource : MonoBehaviour
 {
     public ColorState sourceColor;
+    public BackPackState backPackState;
 
     private Renderer _renderer;
 
     private void Start()
     {
         _renderer = GetComponent<Renderer>();
-        _renderer.material.color = ColorUtil.StateToColor(sourceColor);
+
+        if ((int)backPackState > (int)BackpackController.backPackState)
+        {
+            _renderer.material.color = ColorUtil.StateToColor(sourceColor);
+        }
+        else
+        {
+            _renderer.material.color = ColorConstants.GrayColor;
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        PlayerUtil.PlayerAction(other , () => ColorStateManager.instance.UpdateState(sourceColor));
+        PlayerUtil.PlayerAction(other, () =>
+        {
+            BackpackController.backPackState = backPackState;
+            _renderer.material.color = ColorConstants.GrayColor;
+        }, (int)BackpackController.backPackState < (int)backPackState);
     }
 }

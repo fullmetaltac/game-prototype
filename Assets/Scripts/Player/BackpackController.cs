@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 
 public enum BackPackState
@@ -40,15 +41,9 @@ public class BackpackController : MonoBehaviour
         transform.RotateAround(transform.position, rotationDirection * transform.up, currentAngle);
     }
 
-
-    private void Start()
-    {
-        backPackState = BackPackState.COLOR_2;
-    }
-
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.ROTATE_BACKPACK) && (int)backPackState > 1 && canRotate)
+        if (Input.GetKeyDown(PlayerConstants.ROTATE_BACKPACK) && backPackState > 0 && canRotate)
         {
             canRotate = false;
             StartCoroutine(RotateBackpack());
@@ -68,7 +63,7 @@ public class BackpackController : MonoBehaviour
                 {
                     return 480;
                 }
-                if (ColorStateManager.colorState == ColorState.ORANGE && rotationDirection == -1)
+                if (ColorStateManager.colorState == ColorState.AQUA && rotationDirection == -1)
                 {
                     return 480;
                 }
@@ -106,20 +101,35 @@ public class BackpackController : MonoBehaviour
             currentAngle = 0;
 
         currentAngle += GetAngularSpeed() * rotationTime;
-        ColorStateManager.instance.UpdateState(GetNextColor());
+        if ((int) backPackState > 1)
+            ColorStateManager.instance.UpdateState(GetNextColor());
         canRotate = true;
     }
 
+
     private ColorState GetNextColor()
     {
-        switch (Mathf.Abs(currentAngle))
+        
+        if (backPackState == BackPackState.COLOR_2)
         {
-            case 0:
-                return ColorState.AQUA;
-            case 120:
-                return rotationDirection == 1 ? ColorState.VIOLET : ColorState.ORANGE;
-            case 240:
-                return rotationDirection == 1 ? ColorState.ORANGE : ColorState.VIOLET;
+            return (int)ColorStateManager.colorState == 1 ? ColorState.AQUA : ColorState.VIOLET;
+
+        }
+        if (backPackState == BackPackState.COLOR_3)
+        {
+            var value = (int)ColorStateManager.colorState + rotationDirection;
+            if (value < 0)
+            {
+                value = Enum.GetNames(typeof(ColorState)).Length - 1;
+                return (ColorState)value;
+            }
+
+            if (value >= Enum.GetNames(typeof(ColorState)).Length)
+            {
+                value = 0;
+                return (ColorState)value;
+            }
+            return (ColorState)value;
         }
 
         return ColorState.AQUA;

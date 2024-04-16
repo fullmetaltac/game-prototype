@@ -13,6 +13,8 @@ public class ColorConstants
     public static Color OrangeColor = new Color(0.801f, 0.465f, 0.276f, 1);
     public static Color VioletColor = new Color(0.411f, 0.360f, 0.819f, 1);
 
+    public static Color GrayColor = new Color(0.487f, 0.514f, 0.518f, 1);
+
 }
 
 public class ColorUtil
