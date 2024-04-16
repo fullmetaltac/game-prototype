@@ -48,6 +48,8 @@ public class BackpackController : MonoBehaviour
 
     IEnumerator RotateBackpack()
     {
+        Debug.Log(rotationDirection);
+
         float safeOffset = 10f;
         float accumulator = 0.0f;
         float elapsedTime = 0.0f;
@@ -119,9 +121,9 @@ public class BackpackController : MonoBehaviour
             case ColorState.AQUA:
                 return 0;
             case ColorState.VIOLET:
-                return 120;
+                return 120 * rotationDirection;
             case ColorState.ORANGE:
-                return 240;
+                return 240 * rotationDirection;
         }
         return 0;
     }
