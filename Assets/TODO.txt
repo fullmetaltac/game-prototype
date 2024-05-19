@@ -22,3 +22,9 @@ https://youtu.be/K06lVKiY-sY?si=xC_g-tJ5rRdIjkjV
 
 GameCamp project:
 https://github.com/Jack4me/Amphibian_Studio
+
+Unity - Make Objects Between Camera and Player Transparent (No Shader Manipulation)
+https://youtu.be/xMFx9HfRknU?si=blzNeQHjg_UPMKM_
+
+Isometric Character Controller in Unity
+https://youtu.be/8ZxVBCvJDWk?si=mv5if3w79LgIYcii

@@ -1,7 +1,8 @@
 using UnityEngine;
 
 public enum ColorState
-{
+{   
+    GRAY = -1,
     AQUA = 0,
     VIOLET = 1,
     ORANGE = 2
@@ -23,6 +24,8 @@ public class ColorUtil
     {
         switch (colorState)
         {
+            case ColorState.GRAY:
+                return ColorConstants.GrayColor;
             case ColorState.AQUA:
                 return ColorConstants.AquaColor;
             case ColorState.ORANGE:
