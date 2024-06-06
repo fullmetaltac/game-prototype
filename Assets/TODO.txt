@@ -1,10 +1,3 @@
-move color blocks
-
-button hints
-hollogram
-stencil shaders
-
-
 MODELING IN UNITY?! - ProBuilder Tutorial:
 https://youtu.be/PUSOg5YEflM?si=orTFvF0eclre9Dyt
 
@@ -20,11 +13,14 @@ https://youtu.be/7XVSLpo97k0?si=y9rONcOl3DvIME3r
 How to Make a Flexible Interaction System in 2 Minutes [C#] [Unity3D]
 https://youtu.be/K06lVKiY-sY?si=xC_g-tJ5rRdIjkjV
 
-GameCamp project:
-https://github.com/Jack4me/Amphibian_Studio
-
 Unity - Make Objects Between Camera and Player Transparent (No Shader Manipulation)
 https://youtu.be/xMFx9HfRknU?si=blzNeQHjg_UPMKM_
 
 Isometric Character Controller in Unity
 https://youtu.be/8ZxVBCvJDWk?si=mv5if3w79LgIYcii
+
+Wall Cutout in Unity Shader Graph
+https://www.youtube.com/watch?v=jidloC6gyf8
+
+GameCamp project:
+https://github.com/Jack4me/Amphibian_Studio

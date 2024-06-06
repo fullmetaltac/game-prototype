@@ -51,9 +51,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            var camTransform = Camera.main.transform;
             float verticalInput = Input.GetAxisRaw("Vertical");
             float horizontalInput = Input.GetAxisRaw("Horizontal");
-            moveDirection = new Vector3(horizontalInput, 0f, verticalInput);
+            moveDirection = camTransform.forward * verticalInput + camTransform.right * horizontalInput;
         }
         moveDirection.Normalize();
         moveDirection *= moveSpeed;

@@ -87,84 +87,85 @@ public class MapManager : MonoBehaviour
             }
         }
     }
-    public static void DefineNeighbors(Room room)
+    public static Neighbors DefineNeighbors(Tuple<int, int> roomIndex)
     {
-        int i = room.currentRoom.Item1;
-        int j = room.currentRoom.Item2;
+        int i = roomIndex.Item1;
+        int j = roomIndex.Item2;
+        var neigbors = new Neighbors();
 
         // left-bottom corner
         if (i == 0 && j == 0)
         {
-            room.topRoom = Tuple.Create(i, j + 1);
-            room.leftRoom = null;
-            room.rightRoom = Tuple.Create(i + 1, j);
-            room.bottomRoom = null;
-            return;
+            neigbors.topRoom = Tuple.Create(i, j + 1);
+            neigbors.leftRoom = null;
+            neigbors.rightRoom = Tuple.Create(i + 1, j);
+            neigbors.bottomRoom = null;
+            return neigbors;
         }
         // left-top corner
         if (i == 0 && j == cols - 1)
         {
-            room.topRoom = null;
-            room.leftRoom = null;
-            room.rightRoom = Tuple.Create(i + 1, j);
-            room.bottomRoom = Tuple.Create(i, j - 1);
-            return;
+            neigbors.topRoom = null;
+            neigbors.leftRoom = null;
+            neigbors.rightRoom = Tuple.Create(i + 1, j);
+            neigbors.bottomRoom = Tuple.Create(i, j - 1);
+            return neigbors;
         }
         //right-bottom corner
         if (i == rows - 1 && j == 0)
         {
-            room.topRoom = Tuple.Create(i, j + 1);
-            room.leftRoom = Tuple.Create(i - 1, j);
-            room.rightRoom = null;
-            room.bottomRoom = null;
-            return;
+            neigbors.topRoom = Tuple.Create(i, j + 1);
+            neigbors.leftRoom = Tuple.Create(i - 1, j);
+            neigbors.rightRoom = null;
+            neigbors.bottomRoom = null;
+            return neigbors;
         }
         // right-top corner
         if (i == rows - 1 && j == cols - 1)
         {
-            room.topRoom = null;
-            room.leftRoom = Tuple.Create(i - 1, j);
-            room.rightRoom = null;
-            room.bottomRoom = Tuple.Create(i, j - 1);
-            return;
+            neigbors.topRoom = null;
+            neigbors.leftRoom = Tuple.Create(i - 1, j);
+            neigbors.rightRoom = null;
+            neigbors.bottomRoom = Tuple.Create(i, j - 1);
+            return neigbors;
         }
         if (ContainsTuple(borderTop, Tuple.Create(i, j)))
         {
-            room.topRoom = null;
-            room.leftRoom = Tuple.Create(i - 1, j);
-            room.rightRoom = Tuple.Create(i + 1, j);
-            room.bottomRoom = Tuple.Create(i, j - 1);
-            return;
+            neigbors.topRoom = null;
+            neigbors.leftRoom = Tuple.Create(i - 1, j);
+            neigbors.rightRoom = Tuple.Create(i + 1, j);
+            neigbors.bottomRoom = Tuple.Create(i, j - 1);
+            return neigbors;
         }
         if (ContainsTuple(borderBottom, Tuple.Create(i, j)))
         {
-             room.topRoom = Tuple.Create(i, j + 1);
-            room.leftRoom = Tuple.Create(i - 1, j);
-            room.rightRoom = Tuple.Create(i + 1, j);
-            room.bottomRoom = null;
-            return;
+             neigbors.topRoom = Tuple.Create(i, j + 1);
+            neigbors.leftRoom = Tuple.Create(i - 1, j);
+            neigbors.rightRoom = Tuple.Create(i + 1, j);
+            neigbors.bottomRoom = null;
+            return neigbors;
         }
         if (ContainsTuple(borderLeft, Tuple.Create(i, j)))
         {
-            room.topRoom = Tuple.Create(i, j + 1);
-            room.leftRoom = null;
-            room.rightRoom = Tuple.Create(i + 1, j);
-            room.bottomRoom = Tuple.Create(i, j - 1);
-            return;
+            neigbors.topRoom = Tuple.Create(i, j + 1);
+            neigbors.leftRoom = null;
+            neigbors.rightRoom = Tuple.Create(i + 1, j);
+            neigbors.bottomRoom = Tuple.Create(i, j - 1);
+            return neigbors;
         }
         if (ContainsTuple(borderRight, Tuple.Create(i, j)))
         {
-            room.topRoom = Tuple.Create(i, j + 1);
-            room.leftRoom = Tuple.Create(i - 1, j);
-            room.rightRoom = null;
-            room.bottomRoom = Tuple.Create(i, j - 1);
-            return;
+            neigbors.topRoom = Tuple.Create(i, j + 1);
+            neigbors.leftRoom = Tuple.Create(i - 1, j);
+            neigbors.rightRoom = null;
+            neigbors.bottomRoom = Tuple.Create(i, j - 1);
+            return neigbors ;
         }
-        room.topRoom = Tuple.Create(i, j + 1);
-        room.leftRoom = Tuple.Create(i - 1, j);
-        room.rightRoom = Tuple.Create(i + 1, j);
-        room.bottomRoom = Tuple.Create(i, j - 1);
-        return;
+        neigbors.topRoom = Tuple.Create(i, j + 1);
+        neigbors.leftRoom = Tuple.Create(i - 1, j);
+        neigbors.rightRoom = Tuple.Create(i + 1, j);
+        neigbors.bottomRoom = Tuple.Create(i, j - 1);
+        return neigbors;
     }
 
     static void DefineDiagonalN1()
