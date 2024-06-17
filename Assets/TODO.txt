@@ -1,3 +1,6 @@
+GameCamp project:
+https://github.com/Jack4me/Amphibian_Studio
+
 MODELING IN UNITY?! - ProBuilder Tutorial:
 https://youtu.be/PUSOg5YEflM?si=orTFvF0eclre9Dyt
 
@@ -22,5 +25,11 @@ https://youtu.be/8ZxVBCvJDWk?si=mv5if3w79LgIYcii
 Wall Cutout in Unity Shader Graph
 https://www.youtube.com/watch?v=jidloC6gyf8
 
-GameCamp project:
-https://github.com/Jack4me/Amphibian_Studio
+[TUTORIAL] Stencil buffer in Unity URP (cutting holes, impossible geometry, magic card)
+https://youtu.be/y-SEiDTbszk?si=tOKck7LPF2_Ru03w
+
+[TUTORIAL] Interactive Shadows in Unity
+https://www.youtube.com/watch?v=3MnA8lYQ_P0
+
+[TUTORIAL] Custom Shadows in Unity URP using Shader Graph
+https://www.youtube.com/watch?v=GiJbur0CrnU

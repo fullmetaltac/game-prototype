@@ -8,6 +8,12 @@ public class CameraManager : MonoBehaviour
     public float smoothSpeed = 5f;
 
     public static CameraManager instance;
+
+    private float currentAngle;
+    private float rotationTime = .5f;
+    private int angularSpeed = 180; // deg per second
+
+    public static bool canRotate = true;
     public static bool isRoomEnter = false;
 
     private void Awake()
@@ -30,10 +36,6 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    private float currentAngle;
-    public static bool canRotate = true;
-    private int angularSpeed = 180; // deg per second
-    private float rotationTime = .5f;
 
 
 

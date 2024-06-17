@@ -1,25 +1,32 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class DoorController : MonoBehaviour
 {
     public DoorType doorType;
+    private Vector3 moveDirection;
+
+    private void Start()
+    {
+        moveDirection = transform.position - GameManager.instance.room.center;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Player" && PlayerController.instance.canTeleport)
+        if (other.name == "Player" && PlayerController.instance.isFreeMove)
         {
-            GameManager.instance.RenderNextRoom(doorType);
             StartCoroutine(DoorAction());
+            GameManager.instance.RenderNextRoom(doorType);
+            GetComponent<BoxCollider>().enabled = false;
         }
     }
 
     private IEnumerator DoorAction()
     {
-        PlayerController.instance.SetTeleportVector(transform.right);
-        PlayerController.instance.canTeleport = false;
+        PlayerController.instance.SetFixedDirection(moveDirection);
+        PlayerController.instance.isFreeMove = false;        
         yield return new WaitForSeconds(TeleportConstants.teleportDuration);
-        PlayerController.instance.canTeleport = true;
+        PlayerController.instance.isFreeMove = true;
         CameraManager.isRoomEnter = true;
     }
 }

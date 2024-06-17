@@ -35,7 +35,7 @@ public class Teleport : MonoBehaviour, IColorSubscriber
     private void OnTriggerEnter(Collider other)
     {
         var playerColorState = ColorStateManager.colorState;
-        if (other.tag == "Player" && PlayerController.instance.canTeleport && playerColorState == portalColor)
+        if (other.tag == "Player" && PlayerController.instance.isFreeMove && playerColorState == portalColor)
         {
             if (destination != null)
             {
@@ -58,13 +58,13 @@ public class Teleport : MonoBehaviour, IColorSubscriber
 
             Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
             player.transform.position = destination.position + positionOffset;
-            PlayerController.instance.SetTeleportVector(portalDirection);
+            PlayerController.instance.SetFixedDirection(portalDirection);
             PlayerController.instance.moveSpeed /= 2;
         }
 
-        PlayerController.instance.canTeleport = false;
+        PlayerController.instance.isFreeMove = false;
         yield return new WaitForSeconds(TeleportConstants.teleportDuration);
-        PlayerController.instance.canTeleport = true;
+        PlayerController.instance.isFreeMove = true;
         PlayerController.instance.moveSpeed *= 2;
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {   
-    private Room room;
+    public Room room;
 
     public static GameManager instance;
 

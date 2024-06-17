@@ -16,8 +16,8 @@ public class PlayerController : MonoBehaviour
     private bool canDoubleJump = true;
 
     //teleport
-    public bool canTeleport = true;
-    private Vector3 teleportVector;
+    public bool isFreeMove = true;
+    private Vector3 fixedDirection;
 
     // dash
     public float dashAmount = 3f;
@@ -45,9 +45,9 @@ public class PlayerController : MonoBehaviour
         }
 
         float yStore = moveDirection.y;
-        if (!canTeleport)
+        if (!isFreeMove)
         {
-            moveDirection = teleportVector;
+            moveDirection = fixedDirection;
         }
         else
         {
@@ -100,9 +100,9 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Grounded", charController.isGrounded);
     }
 
-    public void SetTeleportVector(Vector3 vector)
+    public void SetFixedDirection(Vector3 vector)
     {
-        teleportVector = vector;
+        fixedDirection = vector;
     }
 
     public IEnumerator Dash()

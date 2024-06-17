@@ -1,6 +1,7 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using System.Collections;
+
 public class Room : MonoBehaviour
 {
     public Vector3 center;
@@ -34,11 +35,23 @@ public class Room : MonoBehaviour
         var doorRight = room.transform.Find("doorRight").gameObject;
         var doorBottom = room.transform.Find("doorBottom").gameObject;
 
+
+
         PositionFloor(floor);
         PositionateDoor(doorTop, DoorType.TOP);
         PositionateDoor(doorLeft, DoorType.LEFT);
         PositionateDoor(doorRight, DoorType.RIGHT);
         PositionateDoor(doorBottom, DoorType.BOTTOM);
+
+        var wallTop = room.transform.Find("wall_top").gameObject;
+        var wallLeft = room.transform.Find("wall_left").gameObject;
+        var wallRigh = room.transform.Find("wall_right").gameObject;
+        var wallBottom = room.transform.Find("wall_bot").gameObject;
+
+        PositionateWall(wallTop, WallType.TOP);
+        PositionateWall(wallLeft, WallType.LEFT);
+        PositionateWall(wallRigh, WallType.RIGHT);
+        PositionateWall(wallBottom, WallType.BOTTOM);
 
 
         var color = MapManager.CharToColor(MapManager.rooms[x, z]);
@@ -52,11 +65,11 @@ public class Room : MonoBehaviour
         int z = Index.Item2;
 
         var renderer = floor.GetComponent<Renderer>();
-        xDim = renderer.bounds.extents.x * 2;
-        zDim = renderer.bounds.extents.z * 2;
+        xDim = renderer.bounds.extents.x;
+        zDim = renderer.bounds.extents.z;
 
-        float center_x = x * xDim - MapManager.center.Item1 * xDim;
-        float center_z = z * zDim - MapManager.center.Item2 * zDim;
+        float center_x = x * xDim * 2 - MapManager.center.Item1 * xDim * 2;
+        float center_z = z * zDim * 2 - MapManager.center.Item2 * zDim * 2;
 
         center = new Vector3(center_x, 0, center_z);
         floor.transform.position = center;
@@ -65,22 +78,70 @@ public class Room : MonoBehaviour
     private void PositionateDoor(GameObject door, DoorType type)
     {
         var renderer = door.GetComponent<Renderer>();
-        var room_yDim = renderer.bounds.extents.y * 2;
+        var door_xDim = renderer.bounds.extents.x;
+        var door_yDim = renderer.bounds.extents.y;
+        var door_zDim = renderer.bounds.extents.z;
 
         switch (type)
         {
             case DoorType.TOP:
-                door.transform.position = center + new Vector3(0, room_yDim / 2, zDim / 2);
+                door.transform.position = center + new Vector3(0, door_yDim, zDim - door_zDim);
                 break;
             case DoorType.LEFT:
-                door.transform.position = center + new Vector3(-xDim / 2, room_yDim / 2, 0);
+                door.transform.position = center + new Vector3(-xDim + door_xDim, door_yDim, 0);
                 break;
             case DoorType.RIGHT:
-                door.transform.position = center + new Vector3(xDim / 2, room_yDim / 2, 0);
+                door.transform.position = center + new Vector3(xDim - door_xDim, door_yDim, 0);
                 break;
             case DoorType.BOTTOM:
-                door.transform.position = center + new Vector3(0, room_yDim / 2, -zDim / 2);
+                door.transform.position = center + new Vector3(0, door_yDim, -zDim + door_zDim);
                 break;
         }
+    }
+
+    private void PositionateWall(GameObject wall, WallType type)
+    {
+        var wallBig = wall.transform.Find("wall_big").gameObject;
+        var wallSmall = wall.transform.Find("wall_small").gameObject;
+
+        var rendererBig = wallBig.GetComponent<Renderer>();
+        var rendererSmall = wallSmall.GetComponent<Renderer>();
+
+        var wallBig_xDim = rendererBig.bounds.extents.x;
+        var wallBig_yDim = rendererBig.bounds.extents.y;
+        var wallBig_zDim = rendererBig.bounds.extents.z;
+
+        var wallSmall_xDim = rendererSmall.bounds.extents.x;
+        var wallSmall_yDim = rendererSmall.bounds.extents.y;
+        var wallSmall_zDim = rendererSmall.bounds.extents.z;
+
+        // TODO fix camera clipping issue
+
+        var positionBig = center;
+        var positionSmall = center;
+
+        switch (type)
+        {
+            case WallType.TOP:
+                positionBig += new Vector3(0, wallBig_yDim, zDim - wallBig_zDim);
+                positionSmall += new Vector3(0, wallSmall_yDim, zDim - wallSmall_zDim);
+                break;
+            case WallType.LEFT:
+                positionBig += new Vector3(-xDim + wallBig_xDim, wallBig_yDim, 0);
+                positionSmall += new Vector3(-xDim + wallSmall_xDim, wallSmall_yDim, 0);
+                break;
+            case WallType.RIGHT:
+                positionBig += new Vector3(xDim - wallBig_xDim, wallBig_yDim, 0);
+                positionSmall += new Vector3(xDim - wallSmall_xDim, wallSmall_yDim, 0);
+                break;
+            case WallType.BOTTOM:
+                positionBig += new Vector3(0, wallBig_yDim, -zDim + wallBig_zDim);
+                positionSmall += new Vector3(0, wallSmall_yDim, -zDim + wallSmall_zDim);
+                break;
+        }
+
+        wall.transform.position = positionBig;
+        wallBig.transform.position = positionBig;
+        wallSmall.transform.position = positionSmall;
     }
 }
