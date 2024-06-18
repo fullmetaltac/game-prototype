@@ -12,5 +12,5 @@ public class Neighbors
 
 public enum WallType
 {
-    TOP, BOTTOM, LEFT, RIGHT
+    BOTTOM, LEFT, TOP, RIGHT
 }

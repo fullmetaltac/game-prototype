@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Room : MonoBehaviour
 {
@@ -34,8 +35,6 @@ public class Room : MonoBehaviour
         var doorLeft = room.transform.Find("doorLeft").gameObject;
         var doorRight = room.transform.Find("doorRight").gameObject;
         var doorBottom = room.transform.Find("doorBottom").gameObject;
-
-
 
         PositionFloor(floor);
         PositionateDoor(doorTop, DoorType.TOP);
@@ -101,6 +100,10 @@ public class Room : MonoBehaviour
 
     private void PositionateWall(GameObject wall, WallType type)
     {
+        var wallLen = Enum.GetValues(typeof(WallType)).Length;
+        var frontWall = (int)GameManager.instance.frontWall % wallLen;
+        var nextWall = (frontWall + 1) % wallLen;
+
         var wallBig = wall.transform.Find("wall_big").gameObject;
         var wallSmall = wall.transform.Find("wall_small").gameObject;
 
@@ -114,8 +117,6 @@ public class Room : MonoBehaviour
         var wallSmall_xDim = rendererSmall.bounds.extents.x;
         var wallSmall_yDim = rendererSmall.bounds.extents.y;
         var wallSmall_zDim = rendererSmall.bounds.extents.z;
-
-        // TODO fix camera clipping issue
 
         var positionBig = center;
         var positionSmall = center;
@@ -138,6 +139,19 @@ public class Room : MonoBehaviour
                 positionBig += new Vector3(0, wallBig_yDim, -zDim + wallBig_zDim);
                 positionSmall += new Vector3(0, wallSmall_yDim, -zDim + wallSmall_zDim);
                 break;
+        }
+        
+
+
+        if ((int)type == frontWall || (int)type == nextWall)
+        {
+            wallBig.SetActive(false);
+            wallSmall.SetActive(true);
+        }
+        else
+        {
+            wallBig.SetActive(true);
+            wallSmall.SetActive(false);
         }
 
         wall.transform.position = positionBig;

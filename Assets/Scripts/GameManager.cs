@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {   
     public Room room;
+    public WallType frontWall;
 
     public static GameManager instance;
 
@@ -10,6 +12,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         MapManager.InitMap();
+        frontWall = WallType.BOTTOM;
         room = new Room(MapManager.center);
         room.Render();
         PlayerController.instance.playerModel.transform.position = room.center;
@@ -19,6 +22,8 @@ public class GameManager : MonoBehaviour
     {
         Room newRoom;
         var neighbors = MapManager.DefineNeighbors(room.Index);
+       
+        frontWall++;
 
         switch (doorType)
         {
@@ -38,5 +43,8 @@ public class GameManager : MonoBehaviour
         newRoom.Render();
         StartCoroutine(room.DeRender());
         room = newRoom;
+
+        if ((int)frontWall == Enum.GetValues(typeof(WallType)).Length)
+            frontWall = 0;
     }   
 }
