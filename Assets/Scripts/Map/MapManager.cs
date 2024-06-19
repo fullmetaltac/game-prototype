@@ -87,6 +87,41 @@ public class MapManager : MonoBehaviour
             }
         }
     }
+    public static Tuple<int, int> GetLeftNeighbor(Tuple<int, int> roomIndex)
+    {
+        int i = roomIndex.Item1;
+        int j = roomIndex.Item2;
+        if (ContainsTuple(borderLeft, Tuple.Create(i, j)))
+            return null;
+        return Tuple.Create(i - 1, j); 
+    }
+
+    public static Tuple<int, int> GetRightNeighbor(Tuple<int, int> roomIndex)
+    {
+        int i = roomIndex.Item1;
+        int j = roomIndex.Item2;
+        if (ContainsTuple(borderRight, Tuple.Create(i, j)))
+            return null;
+        return Tuple.Create(i + 1, j);
+    }
+
+    public static Tuple<int, int> GetTopNeighbor(Tuple<int, int> roomIndex)
+    {
+        int i = roomIndex.Item1;
+        int j = roomIndex.Item2;
+        if (ContainsTuple(borderTop, Tuple.Create(i, j)))
+            return null;
+        return Tuple.Create(i, j + 1);
+    }
+
+    public static Tuple<int, int> GetBottomNeighbor(Tuple<int, int> roomIndex)
+    {
+        int i = roomIndex.Item1;
+        int j = roomIndex.Item2;
+        if (ContainsTuple(borderBottom, Tuple.Create(i, j)))
+            return null;
+        return Tuple.Create(i, j - 1);
+    }
     public static Neighbors DefineNeighbors(Tuple<int, int> roomIndex)
     {
         int i = roomIndex.Item1;
@@ -139,7 +174,7 @@ public class MapManager : MonoBehaviour
         }
         if (ContainsTuple(borderBottom, Tuple.Create(i, j)))
         {
-             neigbors.topRoom = Tuple.Create(i, j + 1);
+            neigbors.topRoom = Tuple.Create(i, j + 1);
             neigbors.leftRoom = Tuple.Create(i - 1, j);
             neigbors.rightRoom = Tuple.Create(i + 1, j);
             neigbors.bottomRoom = null;

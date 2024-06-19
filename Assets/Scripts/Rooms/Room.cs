@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class Room : MonoBehaviour
 {
@@ -76,26 +75,43 @@ public class Room : MonoBehaviour
 
     private void PositionateDoor(GameObject door, DoorType type)
     {
+        int x = Index.Item1;
+        int z = Index.Item2;
+        var neighbor = Index;
+        var color = ColorState.GRAY;
+
         var renderer = door.GetComponent<Renderer>();
         var door_xDim = renderer.bounds.extents.x;
         var door_yDim = renderer.bounds.extents.y;
         var door_zDim = renderer.bounds.extents.z;
 
+
         switch (type)
         {
             case DoorType.TOP:
                 door.transform.position = center + new Vector3(0, door_yDim, zDim - door_zDim);
+                neighbor = MapManager.GetTopNeighbor(Index);
                 break;
             case DoorType.LEFT:
                 door.transform.position = center + new Vector3(-xDim + door_xDim, door_yDim, 0);
+                neighbor = MapManager.GetLeftNeighbor(Index);
                 break;
             case DoorType.RIGHT:
                 door.transform.position = center + new Vector3(xDim - door_xDim, door_yDim, 0);
+                neighbor = MapManager.GetRightNeighbor(Index);
                 break;
             case DoorType.BOTTOM:
                 door.transform.position = center + new Vector3(0, door_yDim, -zDim + door_zDim);
+                neighbor = MapManager.GetBottomNeighbor(Index);
                 break;
         }
+
+        if (neighbor != null)
+            color = MapManager.CharToColor(MapManager.rooms[neighbor.Item1, neighbor.Item2]);
+
+
+        door.AddComponent<ColorStateApplier>();
+        door.GetComponent<ColorStateApplier>().sourceColor = color;
     }
 
     private void PositionateWall(GameObject wall, WallType type)
