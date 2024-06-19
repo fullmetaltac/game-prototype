@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.ProBuilder.Shapes;
+using System.Drawing;
 
 public class Room : MonoBehaviour
 {
@@ -9,6 +11,10 @@ public class Room : MonoBehaviour
     public static float xDim, zDim;
     public Tuple<int, int> Index { get; set; }
 
+    GameObject doorTop;
+    GameObject doorLeft;
+    GameObject doorRight;
+    GameObject doorBottom;
 
     public Room(Tuple<int, int> index)
     {
@@ -30,10 +36,10 @@ public class Room : MonoBehaviour
         room.name = string.Format(MapManager.box_name, x, z);
 
         var floor = room.transform.Find("floor").gameObject;
-        var doorTop = room.transform.Find("doorTop").gameObject;
-        var doorLeft = room.transform.Find("doorLeft").gameObject;
-        var doorRight = room.transform.Find("doorRight").gameObject;
-        var doorBottom = room.transform.Find("doorBottom").gameObject;
+        doorTop = room.transform.Find("doorTop").gameObject;
+        doorLeft = room.transform.Find("doorLeft").gameObject;
+        doorRight = room.transform.Find("doorRight").gameObject;
+        doorBottom = room.transform.Find("doorBottom").gameObject;
 
         PositionFloor(floor);
         PositionateDoor(doorTop, DoorType.TOP);
@@ -55,6 +61,18 @@ public class Room : MonoBehaviour
         var color = MapManager.CharToColor(MapManager.rooms[x, z]);
         floor.AddComponent<ColorStateApplier>();
         floor.GetComponent<ColorStateApplier>().sourceColor = color;
+    }
+
+    public void CloseDoors()
+    {
+        if (doorTop.GetComponent<ColorStateApplier>().sourceColor == ColorState.BLACK)
+            doorTop.GetComponent<BoxCollider>().isTrigger = false;
+        if (doorLeft.GetComponent<ColorStateApplier>().sourceColor == ColorState.BLACK)
+            doorLeft.GetComponent<BoxCollider>().isTrigger = false;
+        if (doorRight.GetComponent<ColorStateApplier>().sourceColor == ColorState.BLACK)
+            doorRight.GetComponent<BoxCollider>().isTrigger = false;
+        if (doorBottom.GetComponent<ColorStateApplier>().sourceColor == ColorState.BLACK)
+            doorBottom.GetComponent<BoxCollider>().isTrigger = false;
     }
 
     private void PositionFloor(GameObject floor)
@@ -106,9 +124,15 @@ public class Room : MonoBehaviour
                 break;
         }
 
+        
         if (neighbor != null)
+        {
             color = MapManager.CharToColor(MapManager.rooms[neighbor.Item1, neighbor.Item2]);
-
+            if (GameManager.instance.roomHistory.Contains(neighbor))
+                color = ColorState.BLACK;
+        }
+        else
+            door.GetComponent<BoxCollider>().isTrigger = false;    
 
         door.AddComponent<ColorStateApplier>();
         door.GetComponent<ColorStateApplier>().sourceColor = color;

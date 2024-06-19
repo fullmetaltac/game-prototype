@@ -63,7 +63,7 @@ public class Teleport : MonoBehaviour, IColorSubscriber
         }
 
         PlayerController.instance.isFreeMove = false;
-        yield return new WaitForSeconds(TeleportConstants.teleportDuration);
+        yield return new WaitForSeconds(TeleportUtil.teleportDuration);
         PlayerController.instance.isFreeMove = true;
         PlayerController.instance.moveSpeed *= 2;
     }

@@ -25,8 +25,9 @@ public class DoorController : MonoBehaviour
     {
         PlayerController.instance.SetFixedDirection(moveDirection);
         PlayerController.instance.isFreeMove = false;        
-        yield return new WaitForSeconds(TeleportConstants.teleportDuration);
+        yield return new WaitForSeconds(TeleportUtil.teleportDuration);
         PlayerController.instance.isFreeMove = true;
         CameraManager.isRoomEnter = true;
+        GameManager.instance.room.CloseDoors();
     }
 }

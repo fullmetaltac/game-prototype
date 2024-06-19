@@ -1,16 +1,20 @@
 using System;
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {   
     public Room room;
     public WallType frontWall;
+    public Queue<Tuple<int, int>> roomHistory;
 
     public static GameManager instance;
 
     private void Awake()
     {
         instance = this;
+        roomHistory = new();
         MapManager.InitMap();
         frontWall = WallType.BOTTOM;
         room = new Room(MapManager.center);
@@ -22,8 +26,11 @@ public class GameManager : MonoBehaviour
     {
         Room newRoom;
         var neighbors = MapManager.DefineNeighbors(room.Index);
-       
+        
         frontWall++;
+        roomHistory.Enqueue(room.Index);
+        if (roomHistory.Count > 1)
+            roomHistory.Dequeue();
 
         switch (doorType)
         {

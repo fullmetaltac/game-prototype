@@ -7,9 +7,9 @@ using Random = System.Random;
 public class MapManager : MonoBehaviour
 {
     public static int rows, cols;
-    public static int size = 13;
+    public static int size = 7;
     public static Tuple<int, int> center;
-    public static  string box_name = "Box[{0},{1}]";
+    public static string box_name = "Box[{0},{1}]";
 
     public static char[,] rooms;
     static string start_sector;
@@ -67,7 +67,6 @@ public class MapManager : MonoBehaviour
         // RenderMap(rooms);
     }
 
-
     static void DefineRingSectors()
     {
         for (int i = 0; i < size; i++)
@@ -87,13 +86,14 @@ public class MapManager : MonoBehaviour
             }
         }
     }
+
     public static Tuple<int, int> GetLeftNeighbor(Tuple<int, int> roomIndex)
     {
         int i = roomIndex.Item1;
         int j = roomIndex.Item2;
         if (ContainsTuple(borderLeft, Tuple.Create(i, j)))
             return null;
-        return Tuple.Create(i - 1, j); 
+        return Tuple.Create(i - 1, j);
     }
 
     public static Tuple<int, int> GetRightNeighbor(Tuple<int, int> roomIndex)
@@ -194,7 +194,7 @@ public class MapManager : MonoBehaviour
             neigbors.leftRoom = Tuple.Create(i - 1, j);
             neigbors.rightRoom = null;
             neigbors.bottomRoom = Tuple.Create(i, j - 1);
-            return neigbors ;
+            return neigbors;
         }
         neigbors.topRoom = Tuple.Create(i, j + 1);
         neigbors.leftRoom = Tuple.Create(i - 1, j);
@@ -494,7 +494,7 @@ public class MapManager : MonoBehaviour
                 return ColorState.ORANGE;
         }
         return ColorState.GRAY;
-        }
+    }
 
     static bool ContainsTuple(List<Tuple<int, int>> list, Tuple<int, int> target)
     {
