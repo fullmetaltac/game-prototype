@@ -1,20 +1,27 @@
 using System;
 using UnityEngine;
 using System.Collections;
-using UnityEngine.ProBuilder.Shapes;
-using System.Drawing;
 
 public class Room : MonoBehaviour
 {
     public Vector3 center;
-    private GameObject room;
     public static float xDim, zDim;
     public Tuple<int, int> Index { get; set; }
 
+    GameObject key;
+    GameObject room;
+    GameObject floor;
     GameObject doorTop;
     GameObject doorLeft;
     GameObject doorRight;
     GameObject doorBottom;
+    GameObject wallTop; 
+    GameObject wallLeft;
+    GameObject wallRigh;
+    GameObject wallBottom;
+
+    private string key_name = "Key[{0},{1}]";
+    private string room_name = "Room[{0},{1}]";
 
     public Room(Tuple<int, int> index)
     {
@@ -24,6 +31,7 @@ public class Room : MonoBehaviour
     public IEnumerator DeRender()
     {
         yield return new WaitForSeconds(.5f);
+        Destroy(key);
         Destroy(room);
     }
 
@@ -32,35 +40,21 @@ public class Room : MonoBehaviour
         int x = Index.Item1;
         int z = Index.Item2;
 
-        room = Instantiate(Resources.Load<GameObject>("room"));
-        room.name = string.Format(MapManager.box_name, x, z);
+        key = Instantiate(Resources.Load<GameObject>("key"));
+        key.name = string.Format(key_name, x, z);
 
-        var floor = room.transform.Find("floor").gameObject;
+        room = Instantiate(Resources.Load<GameObject>("room"));
+        room.name = string.Format(room_name, x, z);
+
         doorTop = room.transform.Find("doorTop").gameObject;
         doorLeft = room.transform.Find("doorLeft").gameObject;
         doorRight = room.transform.Find("doorRight").gameObject;
         doorBottom = room.transform.Find("doorBottom").gameObject;
-
-        PositionFloor(floor);
-        PositionateDoor(doorTop, DoorType.TOP);
-        PositionateDoor(doorLeft, DoorType.LEFT);
-        PositionateDoor(doorRight, DoorType.RIGHT);
-        PositionateDoor(doorBottom, DoorType.BOTTOM);
-
-        var wallTop = room.transform.Find("wall_top").gameObject;
-        var wallLeft = room.transform.Find("wall_left").gameObject;
-        var wallRigh = room.transform.Find("wall_right").gameObject;
-        var wallBottom = room.transform.Find("wall_bot").gameObject;
-
-        PositionateWall(wallTop, WallType.TOP);
-        PositionateWall(wallLeft, WallType.LEFT);
-        PositionateWall(wallRigh, WallType.RIGHT);
-        PositionateWall(wallBottom, WallType.BOTTOM);
-
-
-        var color = MapManager.CharToColor(MapManager.rooms[x, z]);
-        floor.AddComponent<ColorStateApplier>();
-        floor.GetComponent<ColorStateApplier>().sourceColor = color;
+        floor = room.transform.Find("floor").gameObject;
+        wallTop = room.transform.Find("wall_top").gameObject;
+        wallLeft = room.transform.Find("wall_left").gameObject;
+        wallRigh = room.transform.Find("wall_right").gameObject;
+        wallBottom = room.transform.Find("wall_bot").gameObject;
     }
 
     public void CloseDoors()
@@ -75,6 +69,19 @@ public class Room : MonoBehaviour
             doorBottom.GetComponent<BoxCollider>().isTrigger = false;
     }
 
+    private void PositionAll()
+    {
+        PositionFloor(floor);
+        PositionKey(key);
+        PositionateDoor(doorTop, DoorType.TOP);
+        PositionateDoor(doorLeft, DoorType.LEFT);
+        PositionateDoor(doorRight, DoorType.RIGHT);
+        PositionateDoor(doorBottom, DoorType.BOTTOM);
+        PositionateWall(wallTop, WallType.TOP);
+        PositionateWall(wallLeft, WallType.LEFT);
+        PositionateWall(wallRigh, WallType.RIGHT);
+        PositionateWall(wallBottom, WallType.BOTTOM);
+    }
     private void PositionFloor(GameObject floor)
     {
         int x = Index.Item1;
@@ -89,6 +96,18 @@ public class Room : MonoBehaviour
 
         center = new Vector3(center_x, 0, center_z);
         floor.transform.position = center;
+
+        var color = MapManager.CharToColor(MapManager.rooms[x, z]);
+        floor.AddComponent<ColorStateApplier>();
+        floor.GetComponent<ColorStateApplier>().sourceColor = color;
+    }
+
+    private void PositionKey(GameObject key)
+    {
+        key.transform.position = floor.transform.position +  new Vector3(0, .6f, 0);
+        var color = MapManager.CharToColor(MapManager.rooms[Index.Item1, Index.Item2]);
+        key.AddComponent<ColorStateApplier>();
+        key.GetComponent<ColorStateApplier>().sourceColor = color;
     }
 
     private void PositionateDoor(GameObject door, DoorType type)

@@ -46,10 +46,11 @@ public class MapManager : MonoBehaviour
 
     static Random random = new();
 
-    //void Start()
-    //{
-    //    InitMap();
-    //}
+    void Start()
+    {   
+        // debug
+        InitMap();
+    }
 
     public static void InitMap()
     {
@@ -62,9 +63,8 @@ public class MapManager : MonoBehaviour
         DefineKeysLocations();
         DefineSectorsOrder();
         DefineRingSectors();
-        //TODO mutate borders
-        //TODO refactor for single looping logic
-        // RenderMap(rooms);
+        // debug
+        RenderMap(rooms);
     }
 
     static void DefineRingSectors()
@@ -460,7 +460,7 @@ public class MapManager : MonoBehaviour
     {
         var box = GameObject.CreatePrimitive(PrimitiveType.Cube);
         box.name = string.Format(box_name, x, z);
-        box.transform.position = new Vector3(x, 0, z);
+        box.transform.position = new Vector3(x, -10, z);
         box.AddComponent<ColorStateApplier>();
         box.GetComponent<ColorStateApplier>().sourceColor = color;
     }
