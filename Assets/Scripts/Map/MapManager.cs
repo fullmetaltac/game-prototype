@@ -11,12 +11,14 @@ public class MapManager : MonoBehaviour
     public static Tuple<int, int> center;
     public static string box_name = "Box[{0},{1}]";
 
-    public static char[,] rooms;
+    private static string room_data= "COLOR:KEY:TYPE";
+
+    public static string[,] rooms;
     static string start_sector;
     static string second_sector;
     static string third_sector;
     static string end_sector;
-    static Dictionary<string, char> colorSectors = new();
+    static Dictionary<string, string> colorSectors = new();
 
     static List<Tuple<int, int>> borders = new();
     static List<Tuple<int, int>> bordersN1 = new();
@@ -122,6 +124,7 @@ public class MapManager : MonoBehaviour
             return null;
         return Tuple.Create(i, j - 1);
     }
+    
     public static Neighbors DefineNeighbors(Tuple<int, int> roomIndex)
     {
         int i = roomIndex.Item1;
@@ -353,7 +356,7 @@ public class MapManager : MonoBehaviour
 
     static void GenerateRooms(int size)
     {
-        rooms = new char[size, size];
+        rooms = new string[size, size];
         rows = rooms.GetLength(0);
         cols = rooms.GetLength(1);
         center = Tuple.Create(rows / 2, cols / 2);
@@ -372,7 +375,7 @@ public class MapManager : MonoBehaviour
                     if ((X >= 0 && Y <= 0) || (X <= 0 && Y <= 0))
                     {
                         rooms[i, j] = colorSectors.GetValueOrDefault("bottom");
-                        roomsBottom.Add(Tuple.Create(i, j));
+                        
                     }
                     else
                     {
@@ -395,14 +398,14 @@ public class MapManager : MonoBehaviour
                 }
             }
         }
-        rooms[size / 2, size / 2] = 'G';
+        rooms[size / 2, size / 2] = "G";
     }
 
     static void DefineColorSectors()
     {
-        char[] colors = { 'A', 'V', 'O', 'G' };
+        string[] colors = { "A", "V", "O", "G" };
         colors = Shuffle(colors);
-        colorSectors = new Dictionary<string, char>
+        colorSectors = new Dictionary<string, string>
         {
             { "top", colors[0] },
             { "left", colors[1] },
@@ -413,7 +416,7 @@ public class MapManager : MonoBehaviour
 
     static void DefineSectorsOrder()
     {
-        start_sector = colorSectors.FirstOrDefault(x => x.Value == 'G').Key;
+        start_sector = colorSectors.FirstOrDefault(x => x.Value == "G").Key;
         switch (start_sector)
         {
             case "top":
@@ -451,7 +454,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    static void ChangeColor(List<Tuple<int, int>> items, char color)
+    static void ChangeColor(List<Tuple<int, int>> items, string color)
     {
         items.ForEach(b => { rooms[b.Item1, b.Item2] = color; });
     }
@@ -465,32 +468,32 @@ public class MapManager : MonoBehaviour
         box.GetComponent<ColorStateApplier>().sourceColor = color;
     }
 
-    static void RenderMap(char[,] array)
+    static void RenderMap(string[,] array)
     {
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
-                RenderRoom(i, j, CharToColor(array[i, j]));
+                RenderRoom(i, j, SrtToColor(array[i, j]));
             }
         }
     }
 
-    public static ColorState CharToColor(char symbol)
+    public static ColorState SrtToColor(string symbol)
     {
         switch (symbol)
         {
-            case 'W':
+            case "W":
                 return ColorState.WHITE;
-            case 'B':
+            case "B":
                 return ColorState.BLACK;
-            case 'G':
+            case "G":
                 return ColorState.GRAY;
-            case 'A':
+            case "A":
                 return ColorState.AQUA;
-            case 'V':
+            case "V":
                 return ColorState.VIOLET;
-            case 'O':
+            case "O":
                 return ColorState.ORANGE;
         }
         return ColorState.GRAY;
@@ -501,7 +504,7 @@ public class MapManager : MonoBehaviour
         return list.Any(tuple => tuple.Item1 == target.Item1 && tuple.Item2 == target.Item2);
     }
 
-    static char[] Shuffle(char[] array)
+    static string[] Shuffle(string[] array)
     {
         for (int i = array.Length - 1; i > 0; i--)
         {

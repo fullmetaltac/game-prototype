@@ -94,14 +94,14 @@ public class Room : MonoBehaviour
         center = new Vector3(center_x, 0, center_z);
         floor.transform.position = center;
 
-        var color = MapManager.CharToColor(MapManager.rooms[x, z]);
+        var color = MapManager.SrtToColor(MapManager.rooms[x, z]);
         floor.AddComponent<ColorStateApplier>();
         floor.GetComponent<ColorStateApplier>().sourceColor = color;
     }
     private void PositionKey(GameObject key)
     {
         key.transform.position = floor.transform.position +  new Vector3(0, .6f, 0);
-        var color = MapManager.CharToColor(MapManager.rooms[Index.Item1, Index.Item2]);
+        var color = MapManager.SrtToColor(MapManager.rooms[Index.Item1, Index.Item2]);
         key.AddComponent<ColorStateApplier>();
         key.GetComponent<ColorStateApplier>().sourceColor = color;
     }
@@ -141,7 +141,7 @@ public class Room : MonoBehaviour
         
         if (neighbor != null)
         {
-            color = MapManager.CharToColor(MapManager.rooms[neighbor.Item1, neighbor.Item2]);
+            color = MapManager.SrtToColor(MapManager.rooms[neighbor.Item1, neighbor.Item2]);
             if (GameManager.instance.roomHistory.Contains(neighbor))
                 color = ColorState.BLACK;
         }
