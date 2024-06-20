@@ -53,8 +53,9 @@ public class Room : MonoBehaviour
     }
     private void InstatiateAll()
     {
-        key = Instantiate(Resources.Load<GameObject>("key"));
         room = Instantiate(Resources.Load<GameObject>("room"));
+        if (IsKeyPresent())
+            key = Instantiate(Resources.Load<GameObject>("key"));
 
         floor = room.transform.Find("floor").gameObject;
         doorTop = room.transform.Find("doorTop").gameObject;
@@ -69,7 +70,8 @@ public class Room : MonoBehaviour
     private void PositionAll()
     {
         PositionFloor(floor);
-        PositionKey(key);
+        if (IsKeyPresent())
+            PositionKey(key);
         PositionateDoor(doorTop, DoorType.TOP);
         PositionateDoor(doorLeft, DoorType.LEFT);
         PositionateDoor(doorRight, DoorType.RIGHT);
@@ -94,14 +96,21 @@ public class Room : MonoBehaviour
         center = new Vector3(center_x, 0, center_z);
         floor.transform.position = center;
 
+        var floorColor = MapManager.rooms[Index.Item1, Index.Item2].Split(':')[0];
         var color = MapManager.SrtToColor(MapManager.rooms[x, z]);
         floor.AddComponent<ColorStateApplier>();
         floor.GetComponent<ColorStateApplier>().sourceColor = color;
     }
+    
+    private bool IsKeyPresent()
+    {
+        return !MapManager.rooms[Index.Item1, Index.Item2].Contains("NO_KEY");
+    }
     private void PositionKey(GameObject key)
     {
         key.transform.position = floor.transform.position +  new Vector3(0, .6f, 0);
-        var color = MapManager.SrtToColor(MapManager.rooms[Index.Item1, Index.Item2]);
+        var keyColor = MapManager.rooms[Index.Item1, Index.Item2].Split(':')[1];
+        var color = MapManager.SrtToColor(keyColor);
         key.AddComponent<ColorStateApplier>();
         key.GetComponent<ColorStateApplier>().sourceColor = color;
     }

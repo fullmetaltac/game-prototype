@@ -14,6 +14,7 @@ public class MapManager : MonoBehaviour
     private static string room_data= "COLOR:KEY:TYPE";
 
     public static string[,] rooms;
+    public static string[,] rooms_debug;
     static string start_sector;
     static string second_sector;
     static string third_sector;
@@ -48,12 +49,6 @@ public class MapManager : MonoBehaviour
 
     static Random random = new();
 
-    void Start()
-    {   
-        // debug
-        InitMap();
-    }
-
     public static void InitMap()
     {
         DefineColorSectors();
@@ -65,8 +60,6 @@ public class MapManager : MonoBehaviour
         DefineKeysLocations();
         DefineSectorsOrder();
         DefineRingSectors();
-        // debug
-        RenderMap(rooms);
     }
 
     static void DefineRingSectors()
@@ -357,6 +350,7 @@ public class MapManager : MonoBehaviour
     static void GenerateRooms(int size)
     {
         rooms = new string[size, size];
+        rooms_debug = new string[size, size];
         rows = rooms.GetLength(0);
         cols = rooms.GetLength(1);
         center = Tuple.Create(rows / 2, cols / 2);
@@ -398,12 +392,17 @@ public class MapManager : MonoBehaviour
                 }
             }
         }
-        rooms[size / 2, size / 2] = "G";
+        rooms[size / 2, size / 2] = "G:NO_KEY:NO_TYPE";
     }
 
     static void DefineColorSectors()
     {
-        string[] colors = { "A", "V", "O", "G" };
+        string[] colors = {
+            "A:NO_KEY:NO_TYPE",
+            "V:NO_KEY:NO_TYPE",
+            "O:NO_KEY:NO_TYPE",
+            "G:NO_KEY:NO_TYPE"
+        };
         colors = Shuffle(colors);
         colorSectors = new Dictionary<string, string>
         {
@@ -416,47 +415,53 @@ public class MapManager : MonoBehaviour
 
     static void DefineSectorsOrder()
     {
-        start_sector = colorSectors.FirstOrDefault(x => x.Value == "G").Key;
+        // debug
+        Array.Copy(rooms, 0, rooms_debug, 0, rooms.Length);
+
+        start_sector = colorSectors.FirstOrDefault(x => x.Value.StartsWith("G")).Key;
         switch (start_sector)
         {
             case "top":
                 end_sector = "bottom";
                 (second_sector, third_sector) = ("right", "left");
-                ChangeColor(keysTop, colorSectors[second_sector]);
-                ChangeColor(keysRight, colorSectors[third_sector]);
-                ChangeColor(keysLeft, colorSectors[end_sector]);
-                ChangeColor(keysBottom, colorSectors[start_sector]);
+                AppendKeyData(keysTop, colorSectors[second_sector]);
+                AppendKeyData(keysRight, colorSectors[third_sector]);
+                AppendKeyData(keysLeft, colorSectors[end_sector]);
+                AppendKeyData(keysBottom, colorSectors[start_sector]);
                 break;
             case "bottom":
                 end_sector = "top";
                 (second_sector, third_sector) = ("left", "right");
-                ChangeColor(keysBottom, colorSectors[second_sector]);
-                ChangeColor(keysLeft, colorSectors[third_sector]);
-                ChangeColor(keysRight, colorSectors[end_sector]);
-                ChangeColor(keysTop, colorSectors[start_sector]);
+                AppendKeyData(keysBottom, colorSectors[second_sector]);
+                AppendKeyData(keysLeft, colorSectors[third_sector]);
+                AppendKeyData(keysRight, colorSectors[end_sector]);
+                AppendKeyData(keysTop, colorSectors[start_sector]);
                 break;
             case "right":
                 end_sector = "left";
                 (second_sector, third_sector) = ("top", "bottom");
-                ChangeColor(keysRight, colorSectors[second_sector]);
-                ChangeColor(keysTop, colorSectors[third_sector]);
-                ChangeColor(keysBottom, colorSectors[end_sector]);
-                ChangeColor(keysLeft, colorSectors[start_sector]);
+                AppendKeyData(keysRight, colorSectors[second_sector]);
+                AppendKeyData(keysTop, colorSectors[third_sector]);
+                AppendKeyData(keysBottom, colorSectors[end_sector]);
+                AppendKeyData(keysLeft, colorSectors[start_sector]);
                 break;
             case "left":
                 end_sector = "right";
                 (second_sector, third_sector) = ("bottom", "top");
-                ChangeColor(keysLeft, colorSectors[second_sector]);
-                ChangeColor(keysBottom, colorSectors[third_sector]);
-                ChangeColor(keysTop, colorSectors[end_sector]);
-                ChangeColor(keysRight, colorSectors[start_sector]);
+                AppendKeyData(keysLeft, colorSectors[second_sector]);
+                AppendKeyData(keysBottom, colorSectors[third_sector]);
+                AppendKeyData(keysTop, colorSectors[end_sector]);
+                AppendKeyData(keysRight, colorSectors[start_sector]);
                 break;
         }
     }
 
-    static void ChangeColor(List<Tuple<int, int>> items, string color)
+    static void AppendKeyData(List<Tuple<int, int>> items, string room_data)
     {
-        items.ForEach(b => { rooms[b.Item1, b.Item2] = color; });
+        var item = items[0];
+        rooms[item.Item1, item.Item2] = rooms[item.Item1, item.Item2].Replace("NO_KEY", room_data.Split(':')[0]);
+        // debug
+        rooms_debug[item.Item1, item.Item2] = room_data.Split(':')[0] + rooms[item.Item1, item.Item2].Substring(1);
     }
 
     static void RenderRoom(int x, int z, ColorState color = ColorState.VIOLET)
@@ -468,20 +473,20 @@ public class MapManager : MonoBehaviour
         box.GetComponent<ColorStateApplier>().sourceColor = color;
     }
 
-    static void RenderMap(string[,] array)
+    public static void RenderMap()
     {
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
-                RenderRoom(i, j, SrtToColor(array[i, j]));
+                RenderRoom(i, j, SrtToColor(rooms_debug[i, j]));
             }
         }
     }
 
-    public static ColorState SrtToColor(string symbol)
+    public static ColorState SrtToColor(string room_data)
     {
-        switch (symbol)
+        switch (room_data.Split(':')[0])
         {
             case "W":
                 return ColorState.WHITE;

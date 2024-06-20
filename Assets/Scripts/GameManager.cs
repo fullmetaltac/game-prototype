@@ -19,7 +19,10 @@ public class GameManager : MonoBehaviour
         room = new Room(MapManager.center);
         room.Render();
         PlayerController.instance.playerModel.transform.position = room.center;
+        //debug
+        MapManager.RenderMap();
     }
+
 
     public void RenderNextRoom(DoorType doorType)
     {
