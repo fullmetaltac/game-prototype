@@ -8,6 +8,9 @@ public class Room : MonoBehaviour
     public static float xDim, zDim;
     public Tuple<int, int> Index { get; set; }
 
+    private string key_name = "Key[{0},{1}]";
+    private string room_name = "Room[{0},{1}]";
+
     GameObject key;
     GameObject room;
     GameObject floor;
@@ -15,48 +18,28 @@ public class Room : MonoBehaviour
     GameObject doorLeft;
     GameObject doorRight;
     GameObject doorBottom;
-    GameObject wallTop; 
+    GameObject wallTop;
     GameObject wallLeft;
     GameObject wallRigh;
     GameObject wallBottom;
-
-    private string key_name = "Key[{0},{1}]";
-    private string room_name = "Room[{0},{1}]";
-
     public Room(Tuple<int, int> index)
     {
         this.Index = index;
     }
+    public void Render()
+    {
+        int x = Index.Item1;
+        int z = Index.Item2;
 
+        InstatiateAll();
+        PositionAll();
+    }
     public IEnumerator DeRender()
     {
         yield return new WaitForSeconds(.5f);
         Destroy(key);
         Destroy(room);
     }
-
-    public void Render()
-    {
-        int x = Index.Item1;
-        int z = Index.Item2;
-
-        key = Instantiate(Resources.Load<GameObject>("key"));
-        key.name = string.Format(key_name, x, z);
-
-        room = Instantiate(Resources.Load<GameObject>("room"));
-        room.name = string.Format(room_name, x, z);
-
-        doorTop = room.transform.Find("doorTop").gameObject;
-        doorLeft = room.transform.Find("doorLeft").gameObject;
-        doorRight = room.transform.Find("doorRight").gameObject;
-        doorBottom = room.transform.Find("doorBottom").gameObject;
-        floor = room.transform.Find("floor").gameObject;
-        wallTop = room.transform.Find("wall_top").gameObject;
-        wallLeft = room.transform.Find("wall_left").gameObject;
-        wallRigh = room.transform.Find("wall_right").gameObject;
-        wallBottom = room.transform.Find("wall_bot").gameObject;
-    }
-
     public void CloseDoors()
     {
         if (doorTop.GetComponent<ColorStateApplier>().sourceColor == ColorState.BLACK)
@@ -68,7 +51,21 @@ public class Room : MonoBehaviour
         if (doorBottom.GetComponent<ColorStateApplier>().sourceColor == ColorState.BLACK)
             doorBottom.GetComponent<BoxCollider>().isTrigger = false;
     }
+    private void InstatiateAll()
+    {
+        key = Instantiate(Resources.Load<GameObject>("key"));
+        room = Instantiate(Resources.Load<GameObject>("room"));
 
+        floor = room.transform.Find("floor").gameObject;
+        doorTop = room.transform.Find("doorTop").gameObject;
+        doorLeft = room.transform.Find("doorLeft").gameObject;
+        doorRight = room.transform.Find("doorRight").gameObject;
+        doorBottom = room.transform.Find("doorBottom").gameObject;
+        wallTop = room.transform.Find("wall_top").gameObject;
+        wallLeft = room.transform.Find("wall_left").gameObject;
+        wallRigh = room.transform.Find("wall_right").gameObject;
+        wallBottom = room.transform.Find("wall_bot").gameObject;
+    }
     private void PositionAll()
     {
         PositionFloor(floor);
@@ -101,7 +98,6 @@ public class Room : MonoBehaviour
         floor.AddComponent<ColorStateApplier>();
         floor.GetComponent<ColorStateApplier>().sourceColor = color;
     }
-
     private void PositionKey(GameObject key)
     {
         key.transform.position = floor.transform.position +  new Vector3(0, .6f, 0);
@@ -109,7 +105,6 @@ public class Room : MonoBehaviour
         key.AddComponent<ColorStateApplier>();
         key.GetComponent<ColorStateApplier>().sourceColor = color;
     }
-
     private void PositionateDoor(GameObject door, DoorType type)
     {
         int x = Index.Item1;
@@ -156,7 +151,6 @@ public class Room : MonoBehaviour
         door.AddComponent<ColorStateApplier>();
         door.GetComponent<ColorStateApplier>().sourceColor = color;
     }
-
     private void PositionateWall(GameObject wall, WallType type)
     {
         var wallLen = Enum.GetValues(typeof(WallType)).Length;
