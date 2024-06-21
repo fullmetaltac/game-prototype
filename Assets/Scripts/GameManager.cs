@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public WallType frontWall;
     public Queue<Tuple<int, int>> roomHistory;
 
+    public List<ColorState> keys = new();
+    
     public static GameManager instance;
 
     private void Awake()
@@ -15,12 +17,16 @@ public class GameManager : MonoBehaviour
         instance = this;
         roomHistory = new();
         MapManager.InitMap();
+        keys.Add(ColorState.GRAY);
         frontWall = WallType.BOTTOM;
         room = new Room(MapManager.center);
         room.Render();
         PlayerController.instance.playerModel.transform.position = room.center;
         //debug
         MapManager.RenderMap();
+        keys.Add(ColorState.AQUA);
+        keys.Add(ColorState.VIOLET);
+        keys.Add(ColorState.ORANGE);
     }
 
 

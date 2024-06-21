@@ -428,6 +428,7 @@ public class MapManager : MonoBehaviour
                 AppendKeyData(keysRight, colorSectors[third_sector]);
                 AppendKeyData(keysLeft, colorSectors[end_sector]);
                 AppendKeyData(keysBottom, colorSectors[start_sector]);
+                AppendAlarmData(keysBottom, colorSectors[start_sector]);
                 break;
             case "bottom":
                 end_sector = "top";
@@ -436,6 +437,7 @@ public class MapManager : MonoBehaviour
                 AppendKeyData(keysLeft, colorSectors[third_sector]);
                 AppendKeyData(keysRight, colorSectors[end_sector]);
                 AppendKeyData(keysTop, colorSectors[start_sector]);
+                AppendAlarmData(keysTop, colorSectors[start_sector]);
                 break;
             case "right":
                 end_sector = "left";
@@ -444,6 +446,7 @@ public class MapManager : MonoBehaviour
                 AppendKeyData(keysTop, colorSectors[third_sector]);
                 AppendKeyData(keysBottom, colorSectors[end_sector]);
                 AppendKeyData(keysLeft, colorSectors[start_sector]);
+                AppendAlarmData(keysLeft, colorSectors[start_sector]);
                 break;
             case "left":
                 end_sector = "right";
@@ -452,6 +455,7 @@ public class MapManager : MonoBehaviour
                 AppendKeyData(keysBottom, colorSectors[third_sector]);
                 AppendKeyData(keysTop, colorSectors[end_sector]);
                 AppendKeyData(keysRight, colorSectors[start_sector]);
+                AppendAlarmData(keysRight, colorSectors[start_sector]);
                 break;
         }
     }
@@ -462,6 +466,12 @@ public class MapManager : MonoBehaviour
         rooms[item.Item1, item.Item2] = rooms[item.Item1, item.Item2].Replace("NO_KEY", room_data.Split(':')[0]);
         // debug
         rooms_debug[item.Item1, item.Item2] = room_data.Split(':')[0] + rooms[item.Item1, item.Item2].Substring(1);
+    }
+
+    static void AppendAlarmData(List<Tuple<int, int>> items, string room_data)
+    {
+        var item = items[0];
+        rooms[item.Item1, item.Item2] = rooms[item.Item1, item.Item2] + ":ALARM";
     }
 
     static void RenderRoom(int x, int z, ColorState color = ColorState.VIOLET)
