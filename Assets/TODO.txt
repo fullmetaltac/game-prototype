@@ -33,3 +33,9 @@ https://www.youtube.com/watch?v=3MnA8lYQ_P0
 
 [TUTORIAL] Custom Shadows in Unity URP using Shader Graph
 https://www.youtube.com/watch?v=GiJbur0CrnU
+
+Write Erosion Shaders In Unity From Scratch | Shader Fundamentals
+https://youtu.be/6CECPjNAoZw?si=yZzYj3irdRkhw3sC
+
+Master Grid Placement in Unity 2022 P1 - Calculating Cell Position
+https://youtu.be/l0emsAHIBjU?si=MC9KLwRlX1MOOmtY
