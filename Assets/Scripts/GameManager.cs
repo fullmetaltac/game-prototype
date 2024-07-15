@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
     private Wall wallRight;
     private Wall wallBottom;
 
+    private Cage cageTop;
+    private Cage cageLeft;
+    private Cage cageRight;
+    private Cage cageBottom;
+
     private Door doorTop;
     private Door doorLeft;
     private Door doorRight;
@@ -57,5 +62,15 @@ public class GameManager : MonoBehaviour
         wallLeft.Render(roomSize, WallLocation.LEFT, WallType.CAM);
         wallRight.Render(roomSize, WallLocation.RIGHT, WallType.NO_CAM);
         wallBottom.Render(roomSize, WallLocation.BOTTOM, WallType.CAM);
-    }   
+
+        cageTop = this.AddComponent<Cage>();
+        cageLeft = this.AddComponent<Cage>();
+        cageRight = this.AddComponent<Cage>();
+        cageBottom = this.AddComponent<Cage>();
+
+        cageTop.Render(roomSize, WallLocation.TOP);
+        cageLeft.Render(roomSize, WallLocation.LEFT);
+        cageRight.Render(roomSize, WallLocation.RIGHT);
+        cageBottom.Render(roomSize, WallLocation.BOTTOM);
+    }
 }

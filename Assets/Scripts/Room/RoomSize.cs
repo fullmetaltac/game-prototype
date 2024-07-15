@@ -7,19 +7,22 @@ public class RoomSize : MonoBehaviour
     public Vector3 center;
     public float xDim, zDim;
     public float wallX, wallZ;
+    public float cageX, cageZ;
 
-    private GameObject roomMesh, wallMesh;
+    private GameObject wallMesh, cageMesh, roomMesh;
 
     public void Render()
     {
         wallMesh = Instantiate(Resources.Load<GameObject>("Models/wall_size"));
+        cageMesh = Instantiate(Resources.Load<GameObject>("Models/cage_size"));
         roomMesh = Instantiate(Resources.Load<GameObject>("Models/floor_size"));
     }
 
     public void DeRender()
     {
-        Destroy(roomMesh); 
+        Destroy(cageMesh); 
         Destroy(wallMesh); 
+        Destroy(roomMesh); 
     }
 
     public void Calculate(Tuple<int, int> Index)
@@ -39,6 +42,10 @@ public class RoomSize : MonoBehaviour
         renderer = wallMesh.GetComponent<Renderer>();
         wallX = renderer.bounds.extents.x;
         wallZ = renderer.bounds.extents.z;
+
+        renderer = cageMesh.GetComponent<Renderer>();
+        cageX = renderer.bounds.extents.x;
+        cageZ = renderer.bounds.extents.z;
 
 
     }

@@ -51,6 +51,7 @@ public class Wall : MonoBehaviour
         switch (wallLocation)
         {
             case WallLocation.TOP:
+                mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
                 mesh.transform.position = center + new Vector3(0, wall_yDim, wallZ);
                 break;
             case WallLocation.LEFT:
@@ -58,7 +59,7 @@ public class Wall : MonoBehaviour
                 mesh.transform.position = center + new Vector3(-wallX, wall_yDim, 0);
                 break;
             case WallLocation.RIGHT:
-                mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
+                mesh.transform.rotation = Quaternion.Euler(0, 180, 0);
                 mesh.transform.position = center + new Vector3(wallX, wall_yDim, 0);
                 break;
             case WallLocation.BOTTOM:
