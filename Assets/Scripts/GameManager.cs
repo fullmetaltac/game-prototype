@@ -8,11 +8,18 @@ public class GameManager : MonoBehaviour
 
     private Bed bed;
     private Floor floor;
+    private RoomSize roomSize;
+
+    private Wall wallTop;
+    private Wall wallLeft;
+    private Wall wallRight;
+    private Wall wallBottom;
+
     private Door doorTop;
     private Door doorLeft;
     private Door doorRight;
     private Door doorBottom;
-    private RoomSize roomSize;
+
     public static GameManager instance;
 
     private void Awake()
@@ -36,9 +43,19 @@ public class GameManager : MonoBehaviour
         doorRight = this.AddComponent<Door>();
         doorBottom = this.AddComponent<Door>();
 
-        doorTop.Render(roomSize, DoorType.TOP);
-        doorLeft.Render(roomSize, DoorType.LEFT);
-        doorRight.Render(roomSize, DoorType.RIGHT);
-        doorBottom.Render(roomSize, DoorType.BOTTOM);
-    }
+        doorTop.Render(roomSize, WallLocation.TOP);
+        doorLeft.Render(roomSize, WallLocation.LEFT);
+        doorRight.Render(roomSize, WallLocation.RIGHT);
+        doorBottom.Render(roomSize, WallLocation.BOTTOM);
+
+        wallTop = this.AddComponent<Wall>();
+        wallLeft = this.AddComponent<Wall>();
+        wallRight = this.AddComponent<Wall>();
+        wallBottom = this.AddComponent<Wall>();
+
+        wallTop.Render(roomSize, WallLocation.TOP, WallType.NO_CAM);
+        wallLeft.Render(roomSize, WallLocation.LEFT, WallType.CAM);
+        wallRight.Render(roomSize, WallLocation.RIGHT, WallType.NO_CAM);
+        wallBottom.Render(roomSize, WallLocation.BOTTOM, WallType.CAM);
+    }   
 }

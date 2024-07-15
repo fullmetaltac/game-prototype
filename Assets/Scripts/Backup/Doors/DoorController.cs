@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DoorController : MonoBehaviour
 {
-    public DoorType doorType;
+    public WallLocation doorType;
     private Vector3 moveDirection;
 
     private void Start()

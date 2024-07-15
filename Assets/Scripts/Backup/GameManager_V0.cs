@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class GameManager_V0 : MonoBehaviour
 {   
     public Room room;
-    public WallType frontWall;
+    public WallLocation frontWall;
     public Queue<Tuple<int, int>> roomHistory;
 
     public List<ColorState> keys = new();
@@ -18,7 +18,7 @@ public class GameManager_V0 : MonoBehaviour
         roomHistory = new();
         MapManager.InitMap();
         keys.Add(ColorState.GRAY);
-        frontWall = WallType.BOTTOM;
+        frontWall = WallLocation.BOTTOM;
         room = new Room(MapManager.center);
         room.Render();
         PlayerController.instance.playerModel.transform.position = room.center;
@@ -30,7 +30,7 @@ public class GameManager_V0 : MonoBehaviour
     }
 
 
-    public void RenderNextRoom(DoorType doorType)
+    public void RenderNextRoom(WallLocation doorType)
     {
         Room newRoom;
         var neighbors = MapManager.DefineNeighbors(room.Index);
@@ -42,13 +42,13 @@ public class GameManager_V0 : MonoBehaviour
 
         switch (doorType)
         {
-            case DoorType.TOP:
+            case WallLocation.TOP:
                 newRoom = new Room(neighbors.topRoom);
                 break;
-            case DoorType.LEFT:
+            case WallLocation.LEFT:
                 newRoom = new Room(neighbors.leftRoom);
                 break;
-            case DoorType.RIGHT:
+            case WallLocation.RIGHT:
                 newRoom = new Room(neighbors.rightRoom);
                 break;
             default:
@@ -59,7 +59,7 @@ public class GameManager_V0 : MonoBehaviour
         StartCoroutine(room.DeRender());
         room = newRoom;
 
-        if ((int)frontWall == Enum.GetValues(typeof(WallType)).Length)
+        if ((int)frontWall == Enum.GetValues(typeof(WallLocation)).Length)
             frontWall = 0;
     }   
 }

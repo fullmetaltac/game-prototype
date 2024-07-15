@@ -87,14 +87,14 @@ public class Room : MonoBehaviour
             PositionKey(key);
         if (IsAlarmPresent())
             PositionAlarm(alarm);
-        PositionateDoor(doorTop, DoorType.TOP);
-        PositionateDoor(doorLeft, DoorType.LEFT);
-        PositionateDoor(doorRight, DoorType.RIGHT);
-        PositionateDoor(doorBottom, DoorType.BOTTOM);
-        PositionateWall(wallTop, WallType.TOP);
-        PositionateWall(wallLeft, WallType.LEFT);
-        PositionateWall(wallRigh, WallType.RIGHT);
-        PositionateWall(wallBottom, WallType.BOTTOM);
+        PositionateDoor(doorTop, WallLocation.TOP);
+        PositionateDoor(doorLeft, WallLocation.LEFT);
+        PositionateDoor(doorRight, WallLocation.RIGHT);
+        PositionateDoor(doorBottom, WallLocation.BOTTOM);
+        PositionateWall(wallTop, WallLocation.TOP);
+        PositionateWall(wallLeft, WallLocation.LEFT);
+        PositionateWall(wallRigh, WallLocation.RIGHT);
+        PositionateWall(wallBottom, WallLocation.BOTTOM);
     }
     private void PositionFloor(GameObject floor)
     {
@@ -142,7 +142,7 @@ public class Room : MonoBehaviour
         alarm.AddComponent<ColorStateApplier>();
         alarm.GetComponent<ColorStateApplier>().sourceColor = color;
     }
-    private void PositionateDoor(GameObject door, DoorType type)
+    private void PositionateDoor(GameObject door, WallLocation type)
     {
         int x = Index.Item1;
         int z = Index.Item2;
@@ -157,19 +157,19 @@ public class Room : MonoBehaviour
 
         switch (type)
         {
-            case DoorType.TOP:
+            case WallLocation.TOP:
                 door.transform.position = center + new Vector3(0, door_yDim, zDim - door_zDim);
                 neighbor = MapManager.GetTopNeighbor(Index);
                 break;
-            case DoorType.LEFT:
+            case WallLocation.LEFT:
                 door.transform.position = center + new Vector3(-xDim + door_xDim, door_yDim, 0);
                 neighbor = MapManager.GetLeftNeighbor(Index);
                 break;
-            case DoorType.RIGHT:
+            case WallLocation.RIGHT:
                 door.transform.position = center + new Vector3(xDim - door_xDim, door_yDim, 0);
                 neighbor = MapManager.GetRightNeighbor(Index);
                 break;
-            case DoorType.BOTTOM:
+            case WallLocation.BOTTOM:
                 door.transform.position = center + new Vector3(0, door_yDim, -zDim + door_zDim);
                 neighbor = MapManager.GetBottomNeighbor(Index);
                 break;
@@ -194,9 +194,9 @@ public class Room : MonoBehaviour
         door.AddComponent<ColorStateApplier>();
         door.GetComponent<ColorStateApplier>().sourceColor = color;
     }
-    private void PositionateWall(GameObject wall, WallType type)
+    private void PositionateWall(GameObject wall, WallLocation type)
     {
-        var wallLen = Enum.GetValues(typeof(WallType)).Length;
+        var wallLen = Enum.GetValues(typeof(WallLocation)).Length;
         var frontWall = (int)GameManager_V0.instance.frontWall % wallLen;
         var nextWall = (frontWall + 1) % wallLen;
 
@@ -219,19 +219,19 @@ public class Room : MonoBehaviour
 
         switch (type)
         {
-            case WallType.TOP:
+            case WallLocation.TOP:
                 positionBig += new Vector3(0, wallBig_yDim, zDim - wallBig_zDim);
                 positionSmall += new Vector3(0, wallSmall_yDim, zDim - wallSmall_zDim);
                 break;
-            case WallType.LEFT:
+            case WallLocation.LEFT:
                 positionBig += new Vector3(-xDim + wallBig_xDim, wallBig_yDim, 0);
                 positionSmall += new Vector3(-xDim + wallSmall_xDim, wallSmall_yDim, 0);
                 break;
-            case WallType.RIGHT:
+            case WallLocation.RIGHT:
                 positionBig += new Vector3(xDim - wallBig_xDim, wallBig_yDim, 0);
                 positionSmall += new Vector3(xDim - wallSmall_xDim, wallSmall_yDim, 0);
                 break;
-            case WallType.BOTTOM:
+            case WallLocation.BOTTOM:
                 positionBig += new Vector3(0, wallBig_yDim, -zDim + wallBig_zDim);
                 positionSmall += new Vector3(0, wallSmall_yDim, -zDim + wallSmall_zDim);
                 break;

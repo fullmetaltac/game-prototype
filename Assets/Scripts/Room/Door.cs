@@ -1,16 +1,11 @@
 using UnityEngine;
 
-public enum DoorType
-{
-    TOP, BOTTOM, LEFT, RIGHT
-}
-
 public class Door : MonoBehaviour
 {
     GameObject mesh;
     string meshName = "Door{0}";
 
-    public void Render(RoomSize roomSize, DoorType doorType)
+    public void Render(RoomSize roomSize, WallLocation doorType)
     {
         Load(doorType);
         Positionate(roomSize, doorType);
@@ -21,13 +16,13 @@ public class Door : MonoBehaviour
         Destroy(mesh);
     }
 
-    private void Load(DoorType doorType)
+    private void Load(WallLocation doorType)
     {
         mesh = Instantiate(Resources.Load<GameObject>("Models/door"));
         mesh.name = string.Format(meshName, doorType.ToString()); 
     }
 
-    private void Positionate(RoomSize roomSize, DoorType doorType)
+    private void Positionate(RoomSize roomSize, WallLocation doorType)
     {
         var wallZ = roomSize.wallZ;
         var wallX = roomSize.wallX;
@@ -38,18 +33,18 @@ public class Door : MonoBehaviour
 
         switch (doorType)
         {
-            case DoorType.TOP:
+            case WallLocation.TOP:
                 mesh.transform.position = center + new Vector3(0, door_yDim, wallZ);
                 break;
-            case DoorType.LEFT:
+            case WallLocation.LEFT:
                 mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
                 mesh.transform.position = center + new Vector3(-wallX, door_yDim, 0);
                 break;
-            case DoorType.RIGHT:
+            case WallLocation.RIGHT:
                 mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
                 mesh.transform.position = center + new Vector3(wallX, door_yDim, 0);
                 break;
-            case DoorType.BOTTOM:
+            case WallLocation.BOTTOM:
                 mesh.transform.position = center + new Vector3(0, door_yDim, -wallZ);
                 break;
         }

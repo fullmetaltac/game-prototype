@@ -1,20 +1,26 @@
+using UnityEditorInternal;
 using UnityEngine;
 
 
-public enum WallType
+public enum WallLocation
 {
     TOP, BOTTOM, LEFT, RIGHT
+}
+
+public enum WallType
+{
+    CAM, NO_CAM
 }
 
 public class Wall : MonoBehaviour
 {
     GameObject mesh;
-    string meshName = "Door{0}";
+    string meshName = "Wall{0}-{1}";
 
-    public void Render(RoomSize roomSize, DoorType doorType)
+    public void Render(RoomSize roomSize, WallLocation wallLocation, WallType wallType)
     {
-        Load(doorType);
-        Positionate(roomSize, doorType);
+        Load(wallLocation, wallType);
+        Positionate(roomSize, wallLocation);
     }
 
     public void DeRender()
@@ -22,36 +28,41 @@ public class Wall : MonoBehaviour
         Destroy(mesh);
     }
 
-    private void Load(DoorType doorType)
+    private void Load(WallLocation wallLocation, WallType wallType)
     {
-        mesh = Instantiate(Resources.Load<GameObject>("Models/door"));
-        mesh.name = string.Format(meshName, doorType.ToString());
+        var model_name = "wall";
+        if (wallType == WallType.CAM)
+            model_name += "_cam";
+        if (wallType == WallType.NO_CAM)
+            model_name += "_no_cam";
+        mesh = Instantiate(Resources.Load<GameObject>("Models/" + model_name));
+        mesh.name = string.Format(meshName, wallLocation.ToString(), wallType.ToString());
     }
 
-    private void Positionate(RoomSize roomSize, DoorType doorType)
+    private void Positionate(RoomSize roomSize, WallLocation wallLocation)
     {
         var wallZ = roomSize.wallZ;
         var wallX = roomSize.wallX;
         var center = roomSize.center;
 
         var renderer = mesh.GetComponent<Renderer>();
-        var door_yDim = renderer.bounds.extents.y;
+        var wall_yDim = renderer.bounds.extents.y;
 
-        switch (doorType)
+        switch (wallLocation)
         {
-            case DoorType.TOP:
-                mesh.transform.position = center + new Vector3(0, door_yDim, wallZ);
+            case WallLocation.TOP:
+                mesh.transform.position = center + new Vector3(0, wall_yDim, wallZ);
                 break;
-            case DoorType.LEFT:
+            case WallLocation.LEFT:
                 mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
-                mesh.transform.position = center + new Vector3(-wallX, door_yDim, 0);
+                mesh.transform.position = center + new Vector3(-wallX, wall_yDim, 0);
                 break;
-            case DoorType.RIGHT:
+            case WallLocation.RIGHT:
                 mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
-                mesh.transform.position = center + new Vector3(wallX, door_yDim, 0);
+                mesh.transform.position = center + new Vector3(wallX, wall_yDim, 0);
                 break;
-            case DoorType.BOTTOM:
-                mesh.transform.position = center + new Vector3(0, door_yDim, -wallZ);
+            case WallLocation.BOTTOM:
+                mesh.transform.position = center + new Vector3(0, wall_yDim, -wallZ);
                 break;
         }
     }
