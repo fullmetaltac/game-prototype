@@ -1,65 +1,44 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
-{   
-    public Room room;
-    public WallType frontWall;
-    public Queue<Tuple<int, int>> roomHistory;
+{
+    public Tuple<int, int> CurrentRoomIndex { get; set; }
 
-    public List<ColorState> keys = new();
-    
+    private Bed bed;
+    private Floor floor;
+    private Door doorTop;
+    private Door doorLeft;
+    private Door doorRight;
+    private Door doorBottom;
+    private RoomSize roomSize;
     public static GameManager instance;
 
     private void Awake()
     {
         instance = this;
-        roomHistory = new();
+
         MapManager.InitMap();
-        keys.Add(ColorState.GRAY);
-        frontWall = WallType.BOTTOM;
-        room = new Room(MapManager.center);
-        room.Render();
-        PlayerController.instance.playerModel.transform.position = room.center;
-        //debug
-        MapManager.RenderMap();
-        keys.Add(ColorState.AQUA);
-        keys.Add(ColorState.VIOLET);
-        keys.Add(ColorState.ORANGE);
+        CurrentRoomIndex = MapManager.center;
+
+        roomSize = this.AddComponent<RoomSize>();
+        roomSize.Calculate(CurrentRoomIndex);
+
+        floor = this.AddComponent<Floor>();
+        floor.Render(roomSize);
+
+        bed = this.AddComponent<Bed>();
+        bed.Render(roomSize);
+
+        doorTop = this.AddComponent<Door>();
+        doorLeft = this.AddComponent<Door>();
+        doorRight = this.AddComponent<Door>();
+        doorBottom = this.AddComponent<Door>();
+
+        doorTop.Render(roomSize, DoorType.TOP);
+        doorLeft.Render(roomSize, DoorType.LEFT);
+        doorRight.Render(roomSize, DoorType.RIGHT);
+        doorBottom.Render(roomSize, DoorType.BOTTOM);
     }
-
-
-    public void RenderNextRoom(DoorType doorType)
-    {
-        Room newRoom;
-        var neighbors = MapManager.DefineNeighbors(room.Index);
-        
-        frontWall++;
-        roomHistory.Enqueue(room.Index);
-        if (roomHistory.Count > 1)
-            roomHistory.Dequeue();
-
-        switch (doorType)
-        {
-            case DoorType.TOP:
-                newRoom = new Room(neighbors.topRoom);
-                break;
-            case DoorType.LEFT:
-                newRoom = new Room(neighbors.leftRoom);
-                break;
-            case DoorType.RIGHT:
-                newRoom = new Room(neighbors.rightRoom);
-                break;
-            default:
-                newRoom = new Room(neighbors.bottomRoom);
-                break;
-        }
-        newRoom.Render();
-        StartCoroutine(room.DeRender());
-        room = newRoom;
-
-        if ((int)frontWall == Enum.GetValues(typeof(WallType)).Length)
-            frontWall = 0;
-    }   
 }
