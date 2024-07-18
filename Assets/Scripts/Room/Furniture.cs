@@ -1,4 +1,5 @@
 using UnityEngine;
+using Random = System.Random;
 
 public enum FurnitureLocation
 {
@@ -23,7 +24,14 @@ public class Furniture : MonoBehaviour
 
     private void Load(FurnitureLocation location)
     {
-        mesh = Instantiate(Resources.Load<GameObject>("Models/desktop"));
+        if (new Random().Next(1, 100) > 50)
+            mesh = Instantiate(Resources.Load<GameObject>("Models/clock"));
+        else if (new Random().Next(1, 100) > 50)
+            mesh = Instantiate(Resources.Load<GameObject>("Models/closet"));
+        else if (new Random().Next(1, 100) > 50)
+            mesh = Instantiate(Resources.Load<GameObject>("Models/fireplace"));
+        else
+            mesh = Instantiate(Resources.Load<GameObject>("Models/desktop"));
         mesh.name = string.Format(meshName, location.ToString());
     }
 
