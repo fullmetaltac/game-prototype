@@ -5,10 +5,10 @@ public class Cage : MonoBehaviour
     GameObject mesh;
     string meshName = "Cage{0}";
 
-    public void Render(RoomSize roomSize, WallLocation cageLocation)
+    public void Render(RoomSize roomSize, WallLocation location)
     {
-        Load(cageLocation);
-        Positionate(roomSize, cageLocation);
+        Load(location);
+        Positionate(roomSize, location);
     }
 
     public void DeRender()
@@ -22,7 +22,7 @@ public class Cage : MonoBehaviour
         mesh.name = string.Format(meshName, doorType.ToString());
     }
 
-    private void Positionate(RoomSize roomSize, WallLocation doorType)
+    private void Positionate(RoomSize roomSize, WallLocation location)
     {
         var cageZ = roomSize.cageZ;
         var cageX = roomSize.cageX;
@@ -31,7 +31,7 @@ public class Cage : MonoBehaviour
         var renderer = mesh.GetComponent<Renderer>();
         var cage_yDim = renderer.bounds.extents.y;
 
-        switch (doorType)
+        switch (location)
         {
             case WallLocation.TOP:
                 mesh.transform.rotation = Quaternion.Euler(0, 90, 0);

@@ -5,10 +5,10 @@ public class Door : MonoBehaviour
     GameObject mesh;
     string meshName = "Door{0}";
 
-    public void Render(RoomSize roomSize, WallLocation doorLocation)
+    public void Render(RoomSize roomSize, WallLocation location)
     {
-        Load(doorLocation);
-        Positionate(roomSize, doorLocation);
+        Load(location);
+        Positionate(roomSize, location);
     }
 
     public void DeRender()
@@ -22,7 +22,7 @@ public class Door : MonoBehaviour
         mesh.name = string.Format(meshName, doorType.ToString()); 
     }
 
-    private void Positionate(RoomSize roomSize, WallLocation doorLocation)
+    private void Positionate(RoomSize roomSize, WallLocation location)
     {
         var wallZ = roomSize.wallZ;
         var wallX = roomSize.wallX;
@@ -31,7 +31,7 @@ public class Door : MonoBehaviour
         var renderer = mesh.GetComponent<Renderer>();
         var door_yDim = renderer.bounds.extents.y;
 
-        switch (doorLocation)
+        switch (location)
         {
             case WallLocation.TOP:
                 mesh.transform.position = center + new Vector3(0, door_yDim, wallZ);

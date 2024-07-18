@@ -25,6 +25,11 @@ public class GameManager : MonoBehaviour
     private Door doorRight;
     private Door doorBottom;
 
+    private Furniture furnitureTopLeft;
+    private Furniture furnitureTopRight;
+    private Furniture furnitureBottomLeft;
+    private Furniture furnitureBottomRight;
+
     public static GameManager instance;
 
     private void Awake()
@@ -72,5 +77,15 @@ public class GameManager : MonoBehaviour
         cageLeft.Render(roomSize, WallLocation.LEFT);
         cageRight.Render(roomSize, WallLocation.RIGHT);
         cageBottom.Render(roomSize, WallLocation.BOTTOM);
+
+        furnitureTopLeft = this.AddComponent<Furniture>();
+        furnitureTopRight = this.AddComponent<Furniture>();
+        furnitureBottomLeft = this.AddComponent<Furniture>();
+        furnitureBottomRight = this.AddComponent<Furniture>();
+
+        furnitureTopLeft.Render(roomSize, FurnitureLocation.TOP_LEFT);
+        furnitureTopRight.Render(roomSize, FurnitureLocation.TOP_RIGHT);
+        furnitureBottomLeft.Render(roomSize, FurnitureLocation.BOTTOM_LEFT);
+        furnitureBottomRight.Render(roomSize, FurnitureLocation.BOTTOM_RIGHT);
     }
 }

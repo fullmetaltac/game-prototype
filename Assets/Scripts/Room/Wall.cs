@@ -17,10 +17,10 @@ public class Wall : MonoBehaviour
     GameObject mesh;
     string meshName = "Wall{0}-{1}";
 
-    public void Render(RoomSize roomSize, WallLocation wallLocation, WallType wallType)
+    public void Render(RoomSize roomSize, WallLocation location, WallType type)
     {
-        Load(wallLocation, wallType);
-        Positionate(roomSize, wallLocation);
+        Load(location, type);
+        Positionate(roomSize, location);
     }
 
     public void DeRender()
@@ -28,18 +28,18 @@ public class Wall : MonoBehaviour
         Destroy(mesh);
     }
 
-    private void Load(WallLocation wallLocation, WallType wallType)
+    private void Load(WallLocation location, WallType type)
     {
         var model_name = "wall";
-        if (wallType == WallType.CAM)
+        if (type == WallType.CAM)
             model_name += "_cam";
-        if (wallType == WallType.NO_CAM)
+        if (type == WallType.NO_CAM)
             model_name += "_no_cam";
         mesh = Instantiate(Resources.Load<GameObject>("Models/" + model_name));
-        mesh.name = string.Format(meshName, wallLocation.ToString(), wallType.ToString());
+        mesh.name = string.Format(meshName, location.ToString(), type.ToString());
     }
 
-    private void Positionate(RoomSize roomSize, WallLocation wallLocation)
+    private void Positionate(RoomSize roomSize, WallLocation location)
     {
         var wallZ = roomSize.wallZ;
         var wallX = roomSize.wallX;
@@ -48,7 +48,7 @@ public class Wall : MonoBehaviour
         var renderer = mesh.GetComponent<Renderer>();
         var wall_yDim = renderer.bounds.extents.y;
 
-        switch (wallLocation)
+        switch (location)
         {
             case WallLocation.TOP:
                 mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
