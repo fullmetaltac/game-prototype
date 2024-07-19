@@ -8,6 +8,7 @@ public class Bed : MonoBehaviour
     {
         Load();
         Positionate(roomSize);
+        ApplyControls();
     }
 
     public void DeRender()
@@ -23,11 +24,14 @@ public class Bed : MonoBehaviour
     private void Positionate(RoomSize roomSize)
     {
         var renderer = mesh.GetComponent<Renderer>();
-        var yDim = renderer.bounds.extents.y;
-
         mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
-        mesh.transform.position = roomSize.center + new Vector3(0, yDim, 0);
+        mesh.transform.position = roomSize.center;
 
+    }
+
+    private void ApplyControls()
+    {
+        mesh.AddComponent<RotateObject>();
     }
 
 }

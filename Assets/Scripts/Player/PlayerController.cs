@@ -1,5 +1,23 @@
+using System;
 using UnityEngine;
 using System.Collections;
+
+
+public class KeyCodes
+{
+    public static KeyCode ACTION = KeyCode.E;
+}
+
+public class PlayerUtil
+{
+    public static void PlayerAction(Collider other, bool condition, Action action)
+    {
+        if (other.tag == "Player" && Input.GetKeyDown(KeyCodes.ACTION) && condition)
+        {
+            action();
+        }
+    }
+}
 
 public class PlayerController : MonoBehaviour
 {

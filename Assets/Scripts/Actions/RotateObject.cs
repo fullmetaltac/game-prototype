@@ -1,7 +1,7 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
-public class RotateBlock : MonoBehaviour
+public class RotateObject : MonoBehaviour
 {
     [Range(-1, 1)]
     [SerializeField]
@@ -11,9 +11,6 @@ public class RotateBlock : MonoBehaviour
     public float rotationTime = 0.5f;
     public RotationAxis rotationAxis = RotationAxis.Y;
 
-    [SerializeField]
-    ColorStateApplier colorStateApplier;
-
     private float startAngle;
     private float targetAngle;
     private bool canRotate = true;
@@ -22,9 +19,6 @@ public class RotateBlock : MonoBehaviour
     private void Start()
     {
         targetAngle = iterationAngle;
-        colorStateApplier = GetComponent<ColorStateApplier>();
-
-
         switch (rotationAxis)
         {
             case RotationAxis.Y:
@@ -42,16 +36,14 @@ public class RotateBlock : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        var playerColorState = ColorStateManager.colorState;
-        var platformColorState = colorStateApplier.sourceColor;
-        if (other.tag == "Player" && Input.GetKeyDown(PlayerConstants.ACTION) && platformColorState == playerColorState && canRotate)
+        PlayerUtil.PlayerAction(other, canRotate, () =>
         {
             canRotate = false;
-            StartCoroutine(RotateObject());
-        }
+            StartCoroutine(ApplyRotate());
+        });
     }
 
-    IEnumerator RotateObject()
+    IEnumerator ApplyRotate()
     {
         float elapsedTime = 0.0f;
         float rotationAmount = targetAngle - startAngle;

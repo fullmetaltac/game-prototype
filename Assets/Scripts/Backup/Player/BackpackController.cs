@@ -43,7 +43,7 @@ public class BackpackController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.ROTATE_BACKPACK) && backPackState > 0 && canRotate)
+        if (Input.GetKeyDown(KeyCode.Q) && backPackState > 0 && canRotate)
         {
             canRotate = false;
             StartCoroutine(RotateBackpack());

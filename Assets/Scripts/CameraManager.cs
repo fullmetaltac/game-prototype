@@ -36,9 +36,6 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-
-
-
     IEnumerator RotateCamera()
     {
         var safeOffset = 5f;

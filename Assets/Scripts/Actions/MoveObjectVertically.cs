@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class MoveBlockUp : MonoBehaviour
+public class MoveObjectVertically : MonoBehaviour
 {
-    public float speed = 3f;
+    public float speed = 10f;
 
-    private float height;
+    public float height;
     private Vector3 moveDirection;
     private Vector3 initialPosition;
 
@@ -18,36 +18,31 @@ public class MoveBlockUp : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
-        {
-            moveDirection.y = 1f;
-        }
+            moveDirection.y = -1f;
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
-        {
-            moveDirection.y = -1f;
-        }
+            moveDirection.y = 1f;
     }
 
     private void Update()
     {
         var movement = moveDirection * speed * Time.deltaTime;
+        if (moveDirection.y < 0)
+        {
+            if (transform.position.y > -height * 0.5)
+            {
+                transform.position += movement;
+            }
+        }
         if (moveDirection.y > 0)
         {
-            if (transform.position.y < height * 0.475)
+            if (transform.position.y < height * 0.5)
             {
                 transform.position += movement;
             }
-        }
-        else if (moveDirection.y < 0)
-        {
-            if (transform.position.y > initialPosition.y)
-            {
-                transform.position += movement;
-            }
+
         }
     }
-
-
 }

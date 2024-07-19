@@ -6,11 +6,10 @@ public class ColorInverser : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        PlayerUtil.PlayerAction(other, () =>
+        PlayerUtil.PlayerAction(other, (int)BackpackController.backPackState > 2, () =>
         {
             BackpackController.instance.InverseRotation();
             _particleSystem.Play();
-
-        }, (int)BackpackController.backPackState > 2);
+        });
     }
 }

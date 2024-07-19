@@ -29,7 +29,7 @@ public class FillLiquid : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         var playerColorState = ColorStateManager.colorState;
-        if (other.tag == "Player" && Input.GetKeyDown(PlayerConstants.ACTION) && playerColorState == waterColor)
+        if (other.tag == "Player" && Input.GetKeyDown(KeyCodes.ACTION) && playerColorState == waterColor)
         {
             _enabled = true;
         }

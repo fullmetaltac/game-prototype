@@ -9,6 +9,7 @@ public class Cage : MonoBehaviour
     {
         Load(location);
         Positionate(roomSize, location);
+        ApplyControls();
     }
 
     public void DeRender()
@@ -48,5 +49,10 @@ public class Cage : MonoBehaviour
                 mesh.transform.position = center + new Vector3(0, cage_yDim, -cageZ);
                 break;
         }
+    }
+
+    private void ApplyControls()
+    {
+        mesh.AddComponent<MoveObjectVertically>();
     }
 }
