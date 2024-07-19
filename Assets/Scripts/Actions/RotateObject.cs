@@ -8,7 +8,7 @@ public class RotateObject : MonoBehaviour
     public int rotationDirection = 1;
 
     public int iterationAngle = 90;
-    public float rotationTime = 0.5f;
+    public float rotationTime = 1f;
     public RotationAxis rotationAxis = RotationAxis.Y;
 
     private float startAngle;
