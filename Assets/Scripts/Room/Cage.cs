@@ -36,23 +36,23 @@ public class Cage : MonoBehaviour
         {
             case WallLocation.TOP:
                 mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
-                mesh.transform.position = center + new Vector3(0, cage_yDim, cageZ);
+                mesh.transform.position = center + new Vector3(0, -cage_yDim, cageZ);
                 break;
             case WallLocation.LEFT:
-                mesh.transform.position = center + new Vector3(-cageX, cage_yDim, 0);
+                mesh.transform.position = center + new Vector3(-cageX, -cage_yDim, 0);
                 break;
             case WallLocation.RIGHT:
-                mesh.transform.position = center + new Vector3(cageX, cage_yDim, 0);
+                mesh.transform.position = center + new Vector3(cageX, -cage_yDim, 0);
                 break;
             case WallLocation.BOTTOM:
                 mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
-                mesh.transform.position = center + new Vector3(0, cage_yDim, -cageZ);
+                mesh.transform.position = center + new Vector3(0, -cage_yDim, -cageZ);
                 break;
         }
     }
 
     private void ApplyControls()
     {
-        mesh.AddComponent<MoveObjectVertically>();
+        mesh.AddComponent<MoveCage>();
     }
 }
