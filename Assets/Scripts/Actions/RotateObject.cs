@@ -15,10 +15,8 @@ public class RotateObject : MonoBehaviour
     private float targetAngle;
     private bool canRotate = true;
 
-
     private void Start()
     {
-        targetAngle = iterationAngle;
         switch (rotationAxis)
         {
             case RotationAxis.Y:
@@ -31,6 +29,7 @@ public class RotateObject : MonoBehaviour
                 startAngle = transform.eulerAngles.z;
                 break;
         }
+        targetAngle = startAngle + iterationAngle;
     }
 
 
@@ -38,6 +37,7 @@ public class RotateObject : MonoBehaviour
     {
         PlayerUtil.PlayerAction(other, canRotate, () =>
         {
+
             canRotate = false;
             StartCoroutine(ApplyRotate());
         });

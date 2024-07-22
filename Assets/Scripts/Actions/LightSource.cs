@@ -56,12 +56,16 @@ public class ColorUtil
 public class LightSource : MonoBehaviour
 {
     public float rayDistance = 30f;
+    public static bool isLightSourceActive = false;
 
     private MoveCage cage;
-    private RaycastHit previousHit;
+    private Collider previousHitCollider;
 
     void Update()
     {
+        if (!isLightSourceActive)
+            return;
+
         int layerMask = 1 << LayerMask.NameToLayer("IgnoreRaycast");
         layerMask = ~layerMask; 
 
@@ -70,21 +74,17 @@ public class LightSource : MonoBehaviour
         {
             if (hit.collider.isTrigger && hit.collider.gameObject.tag == "Cage")
             {
-                if (previousHit.collider != hit.collider)
-                {
-                    cage = hit.collider.gameObject.GetComponent<MoveCage>();
-                    cage.MoveUp();
-                }
+                cage = hit.collider.gameObject.GetComponent<MoveCage>();
+                cage.MoveUp();
             }
-            previousHit = hit;
+            previousHitCollider = hit.collider;
         }
         else
         {
-            if (previousHit.collider != null && previousHit.collider.isTrigger && previousHit.collider.gameObject.tag == "Cage")
+            if (previousHitCollider != null)
             {
-                cage.MoveDown();
+                cage.MoveDown();   
             }
-            previousHit = new RaycastHit();
         }
     }
 }

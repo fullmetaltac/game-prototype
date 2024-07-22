@@ -1,5 +1,6 @@
 using UnityEngine;
 using Random = System.Random;
+using System.Collections.Generic;
 
 public class Floor : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Floor : MonoBehaviour
         Load();
         AssignMaterials();
         Positionate(roomSize);
+        AssignButton();
     }
 
     public void DeRender()
@@ -37,6 +39,31 @@ public class Floor : MonoBehaviour
             else
                 renderer.material = Resources.Load<Material>("Materials/mat_floor_bright");
         }
+    }
+
+    private void AssignButton()
+    {
+        List<GameObject> tiles = new();
+        foreach (Transform child in mesh.transform)
+        {
+            if (child.gameObject.name.StartsWith("tile_button"))
+                tiles.Add(child.gameObject);
+        }
+
+        int rndIdx = new Random().Next(0, tiles.Count);
+        var tile = tiles[rndIdx];
+        
+        tile.AddComponent<BoxCollider>();
+        tile.AddComponent<ActivateLightSource>();
+        
+        var boxCollider = tile.GetComponent<BoxCollider>();
+        boxCollider.size = new Vector3(boxCollider.size.x, boxCollider.size.y * 50, boxCollider.size.z);
+        boxCollider.isTrigger = true;
+        
+        // DEBUG
+        var renderer = tile.GetComponent<Renderer>();
+        renderer.material = Resources.Load<Material>("Materials/mat_floor_button");
+        
     }
 
 }
