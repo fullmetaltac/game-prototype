@@ -17,6 +17,7 @@ public class ActivateLightSource : MonoBehaviour
         {
             touched = true;
             LightSource.isLightSourceActive = true;
+            GetComponent<BoxCollider>().enabled = false;
             StartCoroutine(MoveCoroutine());
         }
     }

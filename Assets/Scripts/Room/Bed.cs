@@ -26,7 +26,6 @@ public class Bed : MonoBehaviour
         var renderer = mesh.GetComponent<Renderer>();
         mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
         mesh.transform.position = roomSize.center;
-
     }
 
     private void ApplyControls()
