@@ -30,7 +30,7 @@ public class Bed : MonoBehaviour
 
     private void ApplyControls()
     {
-        mesh.AddComponent<RotateObject>();
+        mesh.AddComponent<ControllerBed>();
     }
 
 }

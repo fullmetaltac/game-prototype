@@ -53,6 +53,6 @@ public class Cage : MonoBehaviour
 
     private void ApplyControls()
     {
-        mesh.AddComponent<MoveCage>();
+        mesh.AddComponent<ControllerCage>();
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class RotateObject : MonoBehaviour
+public class ControllerBed : MonoBehaviour
 {
     [Range(-1, 1)]
     [SerializeField]

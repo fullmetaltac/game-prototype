@@ -53,37 +53,42 @@ public class ColorUtil
         return ColorConstants.AquaColor;
     }
 }
-public class LightSource : MonoBehaviour
+public class SourceLight : MonoBehaviour
 {
-    public float rayDistance = 30f;
     public static bool isLightSourceActive = false;
 
-    private MoveCage cage;
+    private ControllerDoor door;
+    private RaycastHit hit;
     private Collider previousHitCollider;
+
+    private float rayDistance = 30f;
 
     void Update()
     {
         if (!isLightSourceActive)
             return;
 
-        int layerMask = 1 << LayerMask.NameToLayer("IgnoreRaycast");
-        layerMask = ~layerMask; 
+        var layerMask = LayerMask.GetMask("DoorLayer");
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, -transform.right, out hit, rayDistance, layerMask))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, layerMask))
         {
-            if (hit.collider.isTrigger && hit.collider.gameObject.tag == "Cage")
+            Debug.Log("1");
+            Debug.DrawRay(transform.position, transform.forward * rayDistance, Color.red);
+            if (hit.collider.isTrigger && hit.collider.gameObject.tag == "Door")
             {
-                cage = hit.collider.gameObject.GetComponent<MoveCage>();
-                cage.MoveUp();
+                Debug.Log("2");
+                door = hit.collider.gameObject.GetComponent<ControllerDoor>();
+                door.Open();
             }
             previousHitCollider = hit.collider;
         }
         else
         {
+            Debug.Log("3");
             if (previousHitCollider != null)
             {
-                cage?.MoveDown();   
+                Debug.Log("4");
+                door?.Close();
             }
         }
     }

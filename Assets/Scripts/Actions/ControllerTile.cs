@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ActivateLightSource : MonoBehaviour
+public class ControllerTile : MonoBehaviour
 {
     private float height;
     private bool touched = false;
@@ -16,7 +16,8 @@ public class ActivateLightSource : MonoBehaviour
         if (other.CompareTag("Player") && !touched)
         {
             touched = true;
-            LightSource.isLightSourceActive = true;
+            SourceCage.isCageSourceActive = true;
+            SourceLight.isLightSourceActive = true;
             GetComponent<BoxCollider>().enabled = false;
             StartCoroutine(MoveCoroutine());
         }

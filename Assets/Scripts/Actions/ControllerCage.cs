@@ -5,7 +5,7 @@ public enum CageState
 {
     UP, DOWN, MOVING
 }
-public class MoveCage : MonoBehaviour
+public class ControllerCage : MonoBehaviour
 {
     public float height;
     public CageState state;

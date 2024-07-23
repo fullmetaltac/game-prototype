@@ -1,23 +1,31 @@
 using UnityEngine;
 using System.Collections;
 
-public class DoorOpen : MonoBehaviour
+
+public enum DoorSate
+{
+    OPEN, CLOSED, MOVING
+}
+public class ControllerDoor : MonoBehaviour
 {
     public float rotationTime = 1f;
     public int rotationDirection = 1;
 
     private Vector3 pivot;
+    private DoorSate doorState;
     private bool canRotate = true;
 
     private void Start()
     {
+        doorState = DoorSate.CLOSED;
+
         var renderer = GetComponent<Renderer>();
         var xDim = renderer.bounds.extents.x;
         var zDim = renderer.bounds.extents.z;
         var depth = xDim > zDim ? zDim : xDim;
 
         pivot = transform.position - RoomSize.center;
-        pivot += pivot.normalized * depth / 2; 
+        pivot += pivot.normalized * depth / 2;
 
         if (zDim > xDim)
             pivot += new Vector3(0, 0, zDim);
@@ -28,17 +36,29 @@ public class DoorOpen : MonoBehaviour
             rotationDirection *= -1;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Open()
     {
-        if (other.CompareTag("Player") && canRotate)
+        if (doorState == DoorSate.CLOSED)
         {
-                canRotate = false;
-                rotationDirection *= -1;
-                StartCoroutine(ApplyRotate());
+            canRotate = false;
+            rotationDirection *= -1;
+            doorState = DoorSate.MOVING;
+            StartCoroutine(ApplyRotate(DoorSate.OPEN));
         }
     }
 
-    IEnumerator ApplyRotate()
+    public void Close()
+    {
+        if (doorState == DoorSate.OPEN)
+        {
+            canRotate = false;
+            rotationDirection *= -1;
+            doorState = DoorSate.MOVING;
+            StartCoroutine(ApplyRotate(DoorSate.CLOSED));
+        }
+    }
+
+    IEnumerator ApplyRotate(DoorSate setState)
     {
         float angle = 0f;
         float elapsedTime = 0.0f;
@@ -54,6 +74,7 @@ public class DoorOpen : MonoBehaviour
             yield return null;
         }
         transform.RotateAround(pivot, Vector3.up, rotationDirection * (rotationAngle - angle));
+        doorState = setState;
         canRotate = true;
     }
 }

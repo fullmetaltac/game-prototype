@@ -54,7 +54,7 @@ public class Floor : MonoBehaviour
         var tile = tiles[rndIdx];
         
         tile.AddComponent<BoxCollider>();
-        tile.AddComponent<ActivateLightSource>();
+        tile.AddComponent<ControllerTile>();
         
         var boxCollider = tile.GetComponent<BoxCollider>();
         boxCollider.size = new Vector3(boxCollider.size.x, boxCollider.size.y * 50, boxCollider.size.z);
