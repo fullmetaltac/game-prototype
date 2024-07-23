@@ -6,11 +6,11 @@ public class Floor : MonoBehaviour
 {
     GameObject mesh;
 
-    public void Render(RoomSize roomSize)
+    public void Render()
     {
         Load();
         AssignMaterials();
-        Positionate(roomSize);
+        Positionate();
         AssignButton();
     }
 
@@ -24,9 +24,9 @@ public class Floor : MonoBehaviour
         mesh = Instantiate(Resources.Load<GameObject>("Models/floor"));
     }
 
-    private void Positionate(RoomSize roomSize)
+    private void Positionate()
     {
-        mesh.transform.position = roomSize.center;
+        mesh.transform.position = RoomSize.center;
     }
 
     private void AssignMaterials()

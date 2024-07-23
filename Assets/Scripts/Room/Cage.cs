@@ -27,7 +27,7 @@ public class Cage : MonoBehaviour
     {
         var cageZ = roomSize.cageZ;
         var cageX = roomSize.cageX;
-        var center = roomSize.center;
+        var center = RoomSize.center;
 
         var renderer = mesh.GetComponent<Renderer>();
         var cage_yDim = renderer.bounds.extents.y;

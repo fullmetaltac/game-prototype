@@ -4,10 +4,10 @@ public class Bed : MonoBehaviour
 {
     GameObject mesh;
 
-    public void Render(RoomSize roomSize)
+    public void Render()
     {
         Load();
-        Positionate(roomSize);
+        Positionate();
         ApplyControls();
     }
 
@@ -21,11 +21,11 @@ public class Bed : MonoBehaviour
         mesh = Instantiate(Resources.Load<GameObject>("Models/bed"));
     }
 
-    private void Positionate(RoomSize roomSize)
+    private void Positionate()
     {
         var renderer = mesh.GetComponent<Renderer>();
         mesh.transform.rotation = Quaternion.Euler(0, 90, 0);
-        mesh.transform.position = roomSize.center;
+        mesh.transform.position = RoomSize.center;
     }
 
     private void ApplyControls()

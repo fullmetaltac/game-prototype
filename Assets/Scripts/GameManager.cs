@@ -43,10 +43,10 @@ public class GameManager : MonoBehaviour
         roomSize.Calculate(CurrentRoomIndex);
 
         floor = this.AddComponent<Floor>();
-        floor.Render(roomSize);
+        floor.Render();
 
         bed = this.AddComponent<Bed>();
-        bed.Render(roomSize);
+        bed.Render();
 
         doorTop = this.AddComponent<Door>();
         doorLeft = this.AddComponent<Door>();
@@ -87,5 +87,8 @@ public class GameManager : MonoBehaviour
         furnitureTopRight.Render(roomSize, FurnitureLocation.TOP_RIGHT);
         furnitureBottomLeft.Render(roomSize, FurnitureLocation.BOTTOM_LEFT);
         furnitureBottomRight.Render(roomSize, FurnitureLocation.BOTTOM_RIGHT);
+
+        // DEBUG
+        MapManager.RenderMap();
     }
 }

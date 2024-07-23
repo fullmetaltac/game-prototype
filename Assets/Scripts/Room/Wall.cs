@@ -43,7 +43,7 @@ public class Wall : MonoBehaviour
     {
         var wallZ = roomSize.wallZ;
         var wallX = roomSize.wallX;
-        var center = roomSize.center;
+        var center = RoomSize.center;
 
         var renderer = mesh.GetComponent<Renderer>();
         var wall_yDim = renderer.bounds.extents.y;

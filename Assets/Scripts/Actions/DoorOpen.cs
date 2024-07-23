@@ -3,21 +3,38 @@ using System.Collections;
 
 public class DoorOpen : MonoBehaviour
 {
-    public GameObject pivot;
-    private bool canRotate = true;
     public float rotationTime = 1f;
     public int rotationDirection = 1;
 
+    private Vector3 pivot;
+    private bool canRotate = true;
+
+    private void Start()
+    {
+        var renderer = GetComponent<Renderer>();
+        var xDim = renderer.bounds.extents.x;
+        var zDim = renderer.bounds.extents.z;
+        var depth = xDim > zDim ? zDim : xDim;
+
+        pivot = transform.position - RoomSize.center;
+        pivot += pivot.normalized * depth / 2; 
+
+        if (zDim > xDim)
+            pivot += new Vector3(0, 0, zDim);
+        else
+            pivot += new Vector3(-xDim, 0, 0);
+
+        if (transform.name.Contains("LEFT") || transform.name.Contains("BOTTOM"))
+            rotationDirection *= -1;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && canRotate)
         {
-            if (canRotate)
-            {
                 canRotate = false;
                 rotationDirection *= -1;
                 StartCoroutine(ApplyRotate());
-            }
         }
     }
 
@@ -31,12 +48,12 @@ public class DoorOpen : MonoBehaviour
         {
             var nextAngle = Mathf.LerpAngle(0f, rotationAngle, elapsedTime / rotationTime);
 
-            transform.RotateAround(pivot.transform.position, Vector3.up, rotationDirection * (nextAngle - angle));
+            transform.RotateAround(pivot, Vector3.up, rotationDirection * (nextAngle - angle));
             elapsedTime += Time.deltaTime;
             angle = nextAngle;
             yield return null;
         }
-        transform.RotateAround(pivot.transform.position, Vector3.up, rotationDirection * (rotationAngle - angle));
+        transform.RotateAround(pivot, Vector3.up, rotationDirection * (rotationAngle - angle));
         canRotate = true;
     }
 }

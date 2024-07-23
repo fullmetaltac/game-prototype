@@ -4,7 +4,7 @@ using UnityEngine;
 public class RoomSize : MonoBehaviour
 {
 
-    public Vector3 center;
+    public static Vector3 center;
     public float xDim, zDim;
     public float wallX, wallZ;
     public float cageX, cageZ;

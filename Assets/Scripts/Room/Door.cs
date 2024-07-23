@@ -26,7 +26,7 @@ public class Door : MonoBehaviour
     {
         var wallZ = roomSize.wallZ;
         var wallX = roomSize.wallX;
-        var center = roomSize.center;
+        var center = RoomSize.center;
 
         var renderer = mesh.GetComponent<Renderer>();
         var door_yDim = renderer.bounds.extents.y;
