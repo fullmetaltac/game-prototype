@@ -83,7 +83,7 @@ public class LightSource : MonoBehaviour
         {
             if (previousHitCollider != null)
             {
-                cage.MoveDown();   
+                cage?.MoveDown();   
             }
         }
     }
