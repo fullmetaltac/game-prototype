@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class CameraManager : MonoBehaviour
+public class ManagerCamera : MonoBehaviour
 {
     public Vector3 offset;
     public Transform target;
     public float smoothSpeed = 5f;
 
-    public static CameraManager instance;
+    public static ManagerCamera instance;
 
     private float currentAngle;
     private float rotationTime = .5f;

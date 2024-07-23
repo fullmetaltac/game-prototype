@@ -16,14 +16,14 @@ public class GameManager_V0 : MonoBehaviour
     {
         instance = this;
         roomHistory = new();
-        MapManager.InitMap();
+        ManagerMap.InitMap();
         keys.Add(ColorState.GRAY);
         frontWall = WallLocation.BOTTOM;
-        room = new Room(MapManager.center);
+        room = new Room(ManagerMap.center);
         room.Render();
         PlayerController.instance.playerModel.transform.position = room.center;
         //debug
-        MapManager.RenderMap();
+        ManagerMap.RenderMap();
         keys.Add(ColorState.AQUA);
         keys.Add(ColorState.VIOLET);
         keys.Add(ColorState.ORANGE);
@@ -33,7 +33,7 @@ public class GameManager_V0 : MonoBehaviour
     public void RenderNextRoom(WallLocation doorType)
     {
         Room newRoom;
-        var neighbors = MapManager.DefineNeighbors(room.Index);
+        var neighbors = ManagerMap.DefineNeighbors(room.Index);
         
         frontWall++;
         roomHistory.Enqueue(room.Index);

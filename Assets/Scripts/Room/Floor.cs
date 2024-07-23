@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Floor : MonoBehaviour
 {
     GameObject mesh;
+    string meshName = "Floor";
 
     public void Render()
     {
@@ -22,6 +23,7 @@ public class Floor : MonoBehaviour
     private void Load()
     {
         mesh = Instantiate(Resources.Load<GameObject>("Models/floor"));
+        mesh.name = meshName;
     }
 
     private void Positionate()

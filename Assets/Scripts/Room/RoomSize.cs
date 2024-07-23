@@ -54,8 +54,8 @@ public class RoomSize : MonoBehaviour
         int x = Index.Item1;
         int z = Index.Item2;
 
-        float center_x = x * xDim * 2 - MapManager.center.Item1 * xDim * 2;
-        float center_z = z * zDim * 2 - MapManager.center.Item2 * zDim * 2;
+        float center_x = x * xDim * 2 - ManagerMap.center.Item1 * xDim * 2;
+        float center_z = z * zDim * 2 - ManagerMap.center.Item2 * zDim * 2;
 
         center = new Vector3(center_x, 0, center_z);
     }

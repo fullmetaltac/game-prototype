@@ -27,7 +27,7 @@ public class DoorController : MonoBehaviour
         PlayerController.instance.isFreeMove = false;        
         yield return new WaitForSeconds(TeleportUtil.teleportDuration);
         PlayerController.instance.isFreeMove = true;
-        CameraManager.isRoomEnter = true;
+        ManagerCamera.isRoomEnter = true;
         GameManager_V0.instance.room.CloseDoors();
     }
 }

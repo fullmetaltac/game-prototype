@@ -15,6 +15,7 @@ public class ControllerDoor : MonoBehaviour
     private DoorSate doorState;
     private bool canRotate = true;
 
+
     private void Start()
     {
         doorState = DoorSate.CLOSED;
@@ -34,6 +35,15 @@ public class ControllerDoor : MonoBehaviour
 
         if (transform.name.Contains("LEFT") || transform.name.Contains("BOTTOM"))
             rotationDirection *= -1;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+
+        }
+
     }
 
     public void Open()

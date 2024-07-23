@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class GameManager : MonoBehaviour
+public class ManagerGame : MonoBehaviour
 {
     public Tuple<int, int> CurrentRoomIndex { get; set; }
 
@@ -30,14 +30,14 @@ public class GameManager : MonoBehaviour
     private Furniture furnitureBottomLeft;
     private Furniture furnitureBottomRight;
 
-    public static GameManager instance;
+    public static ManagerGame instance;
 
     private void Awake()
     {
         instance = this;
 
-        MapManager.InitMap();
-        CurrentRoomIndex = MapManager.center;
+        ManagerMap.InitMap();
+        CurrentRoomIndex = ManagerMap.center;
 
         roomSize = this.AddComponent<RoomSize>();
         roomSize.Calculate(CurrentRoomIndex);
@@ -89,6 +89,6 @@ public class GameManager : MonoBehaviour
         furnitureBottomRight.Render(roomSize, FurnitureLocation.BOTTOM_RIGHT);
 
         // DEBUG
-        MapManager.RenderMap();
+        // MapManager.RenderMap();
     }
 }

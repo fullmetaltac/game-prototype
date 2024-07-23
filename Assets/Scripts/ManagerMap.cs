@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Random = System.Random;
 
-public class MapManager : MonoBehaviour
+public class ManagerMap : MonoBehaviour
 {
     public static int rows, cols;
     public static int size = 7;

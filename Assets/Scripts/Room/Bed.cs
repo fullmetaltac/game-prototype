@@ -3,6 +3,7 @@ using UnityEngine;
 public class Bed : MonoBehaviour
 {
     GameObject mesh;
+    string meshName = "Bed";
 
     public void Render()
     {
@@ -19,6 +20,7 @@ public class Bed : MonoBehaviour
     private void Load()
     {
         mesh = Instantiate(Resources.Load<GameObject>("Models/bed"));
+        mesh.name = meshName;
     }
 
     private void Positionate()

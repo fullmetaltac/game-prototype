@@ -105,40 +105,40 @@ public class Room : MonoBehaviour
         xDim = renderer.bounds.extents.x;
         zDim = renderer.bounds.extents.z;
 
-        float center_x = x * xDim * 2 - MapManager.center.Item1 * xDim * 2;
-        float center_z = z * zDim * 2 - MapManager.center.Item2 * zDim * 2;
+        float center_x = x * xDim * 2 - ManagerMap.center.Item1 * xDim * 2;
+        float center_z = z * zDim * 2 - ManagerMap.center.Item2 * zDim * 2;
 
         center = new Vector3(center_x, 0, center_z);
         floor.transform.position = center;
 
-        var floorColor = MapManager.rooms[Index.Item1, Index.Item2].Split(':')[0];
-        var color = MapManager.SrtToColor(MapManager.rooms[x, z]);
+        var floorColor = ManagerMap.rooms[Index.Item1, Index.Item2].Split(':')[0];
+        var color = ManagerMap.SrtToColor(ManagerMap.rooms[x, z]);
         floor.AddComponent<ColorStateApplier>();
         floor.GetComponent<ColorStateApplier>().sourceColor = color;
     }
     
     private bool IsKeyPresent()
     {
-        return !MapManager.rooms[Index.Item1, Index.Item2].Contains("NO_KEY");
+        return !ManagerMap.rooms[Index.Item1, Index.Item2].Contains("NO_KEY");
     }
 
     private bool IsAlarmPresent()
     {
-        return MapManager.rooms[Index.Item1, Index.Item2].Contains("ALARM");
+        return ManagerMap.rooms[Index.Item1, Index.Item2].Contains("ALARM");
     }
     private void PositionKey(GameObject key)
     {
         key.transform.position = floor.transform.position +  new Vector3(0, .6f, 0);
-        var keyColor = MapManager.rooms[Index.Item1, Index.Item2].Split(':')[1];
-        var color = MapManager.SrtToColor(keyColor);
+        var keyColor = ManagerMap.rooms[Index.Item1, Index.Item2].Split(':')[1];
+        var color = ManagerMap.SrtToColor(keyColor);
         key.AddComponent<ColorStateApplier>();
         key.GetComponent<ColorStateApplier>().sourceColor = color;
     }
     private void PositionAlarm(GameObject alarm)
     {
         alarm.transform.position = floor.transform.position + new Vector3(0, .6f, 0);
-        var alarmColor = MapManager.rooms[Index.Item1, Index.Item2].Split(':')[1];
-        var color = MapManager.SrtToColor(alarmColor);
+        var alarmColor = ManagerMap.rooms[Index.Item1, Index.Item2].Split(':')[1];
+        var color = ManagerMap.SrtToColor(alarmColor);
         alarm.AddComponent<ColorStateApplier>();
         alarm.GetComponent<ColorStateApplier>().sourceColor = color;
     }
@@ -159,25 +159,25 @@ public class Room : MonoBehaviour
         {
             case WallLocation.TOP:
                 door.transform.position = center + new Vector3(0, door_yDim, zDim - door_zDim);
-                neighbor = MapManager.GetTopNeighbor(Index);
+                neighbor = ManagerMap.GetTopNeighbor(Index);
                 break;
             case WallLocation.LEFT:
                 door.transform.position = center + new Vector3(-xDim + door_xDim, door_yDim, 0);
-                neighbor = MapManager.GetLeftNeighbor(Index);
+                neighbor = ManagerMap.GetLeftNeighbor(Index);
                 break;
             case WallLocation.RIGHT:
                 door.transform.position = center + new Vector3(xDim - door_xDim, door_yDim, 0);
-                neighbor = MapManager.GetRightNeighbor(Index);
+                neighbor = ManagerMap.GetRightNeighbor(Index);
                 break;
             case WallLocation.BOTTOM:
                 door.transform.position = center + new Vector3(0, door_yDim, -zDim + door_zDim);
-                neighbor = MapManager.GetBottomNeighbor(Index);
+                neighbor = ManagerMap.GetBottomNeighbor(Index);
                 break;
         }
 
         if (neighbor != null)
         {
-            color = MapManager.SrtToColor(MapManager.rooms[neighbor.Item1, neighbor.Item2]);
+            color = ManagerMap.SrtToColor(ManagerMap.rooms[neighbor.Item1, neighbor.Item2]);
             if (GameManager_V0.instance.roomHistory.Contains(neighbor))
                 color = ColorState.BLACK;
         }
