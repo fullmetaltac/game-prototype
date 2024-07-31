@@ -13,7 +13,7 @@ public class DoorController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Player" && PlayerController.instance.isFreeMove)
+        if (other.name == "Player" && PlayerController.instance.isMoving)
         {
             StartCoroutine(DoorAction());
             GameManager_V0.instance.RenderNextRoom(doorType);
@@ -24,9 +24,9 @@ public class DoorController : MonoBehaviour
     private IEnumerator DoorAction()
     {
         PlayerController.instance.SetFixedDirection(moveDirection);
-        PlayerController.instance.isFreeMove = false;        
+        PlayerController.instance.isMoving = false;        
         yield return new WaitForSeconds(TeleportUtil.teleportDuration);
-        PlayerController.instance.isFreeMove = true;
+        PlayerController.instance.isMoving = true;
         ManagerCamera.isRoomEnter = true;
         GameManager_V0.instance.room.CloseDoors();
     }

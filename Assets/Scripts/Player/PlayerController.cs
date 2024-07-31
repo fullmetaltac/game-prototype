@@ -33,9 +33,10 @@ public class PlayerController : MonoBehaviour
     public float gravityScale = 5f;
     private bool canDoubleJump = true;
 
-    //teleport
-    public bool isFreeMove = true;
+    //door move
+    public bool isMoving = true;
     private Vector3 fixedDirection;
+    public float doorMoveDuration = 0.45f;
 
     // dash
     public float dashAmount = 3f;
@@ -63,7 +64,7 @@ public class PlayerController : MonoBehaviour
         }
 
         float yStore = moveDirection.y;
-        if (!isFreeMove)
+        if (!isMoving)
         {
             moveDirection = fixedDirection;
         }

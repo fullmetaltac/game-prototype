@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.VisualScripting;
+using System.Collections;
 
 public class ManagerRoom : MonoBehaviour
 {
@@ -60,17 +61,17 @@ public class ManagerRoom : MonoBehaviour
 
     private void RenderAll()
     {
-        roomSize.Calculate(ManagerGame.CurrentRoomIndex);
+        roomSize.Calculate(ManagerGame.roomIndex);
         floor.Render();
         bed.Render();
         doorTop.Render(roomSize, WallLocation.TOP);
         doorLeft.Render(roomSize, WallLocation.LEFT);
         doorRight.Render(roomSize, WallLocation.RIGHT);
         doorBottom.Render(roomSize, WallLocation.BOTTOM);
-        wallTop.Render(roomSize, WallLocation.TOP, WallType.NO_CAM);
-        wallLeft.Render(roomSize, WallLocation.LEFT, WallType.CAM);
-        wallRight.Render(roomSize, WallLocation.RIGHT, WallType.NO_CAM);
-        wallBottom.Render(roomSize, WallLocation.BOTTOM, WallType.CAM);
+        wallTop.Render(roomSize, WallLocation.TOP);
+        wallLeft.Render(roomSize, WallLocation.LEFT);
+        wallRight.Render(roomSize, WallLocation.RIGHT);
+        wallBottom.Render(roomSize, WallLocation.BOTTOM);
         cageTop.Render(roomSize, WallLocation.TOP);
         cageLeft.Render(roomSize, WallLocation.LEFT);
         cageRight.Render(roomSize, WallLocation.RIGHT);
@@ -79,6 +80,30 @@ public class ManagerRoom : MonoBehaviour
         furnitureTopRight.Render(roomSize, FurnitureLocation.TOP_RIGHT);
         furnitureBottomLeft.Render(roomSize, FurnitureLocation.BOTTOM_LEFT);
         furnitureBottomRight.Render(roomSize, FurnitureLocation.BOTTOM_RIGHT);
+    }
+        
+
+    public IEnumerator DeRenderAll()
+    {
+        yield return new WaitForSeconds(.5f);
+        floor.DeRender();
+        bed.DeRender();
+        doorTop.DeRender();
+        doorLeft.DeRender();
+        doorRight.DeRender();
+        doorBottom.DeRender();
+        wallTop.DeRender();
+        wallLeft.DeRender();
+        wallRight.DeRender();
+        wallBottom.DeRender();
+        cageTop.DeRender();
+        cageLeft.DeRender();
+        cageRight.DeRender();
+        cageBottom.DeRender();
+        furnitureTopLeft.DeRender();
+        furnitureTopRight.DeRender();
+        furnitureBottomLeft.DeRender();
+        furnitureBottomRight.DeRender();
     }
 
 }

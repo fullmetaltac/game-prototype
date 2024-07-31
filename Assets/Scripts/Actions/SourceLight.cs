@@ -72,11 +72,9 @@ public class SourceLight : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, layerMask))
         {
-            Debug.Log("1");
             Debug.DrawRay(transform.position, transform.forward * rayDistance, Color.red);
             if (hit.collider.isTrigger && hit.collider.gameObject.tag == "Door")
             {
-                Debug.Log("2");
                 door = hit.collider.gameObject.GetComponent<ControllerDoor>();
                 door.Open();
             }
@@ -84,10 +82,8 @@ public class SourceLight : MonoBehaviour
         }
         else
         {
-            Debug.Log("3");
             if (previousHitCollider != null)
             {
-                Debug.Log("4");
                 door?.Close();
             }
         }

@@ -235,9 +235,7 @@ public class Room : MonoBehaviour
                 positionBig += new Vector3(0, wallBig_yDim, -zDim + wallBig_zDim);
                 positionSmall += new Vector3(0, wallSmall_yDim, -zDim + wallSmall_zDim);
                 break;
-        }
-        
-
+        }     
 
         if ((int)type == frontWall || (int)type == nextWall)
         {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Net;
 
 
 public enum DoorSate
@@ -10,40 +11,66 @@ public class ControllerDoor : MonoBehaviour
 {
     public float rotationTime = 1f;
     public int rotationDirection = 1;
+    public WallLocation doorLocation;
+
+    public static bool canWalkIn = false;
 
     private Vector3 pivot;
     private DoorSate doorState;
     private bool canRotate = true;
+    private PlayerController player;
 
+
+    private void Awake()
+    {
+        player = PlayerController.instance;
+    }
 
     private void Start()
     {
         doorState = DoorSate.CLOSED;
+        CalculatePivot();
+        if (transform.name.Contains("LEFT") || transform.name.Contains("BOTTOM"))
+            rotationDirection *= -1;
+    }
 
+    private void CalculatePivot()
+    {
         var renderer = GetComponent<Renderer>();
         var xDim = renderer.bounds.extents.x;
         var zDim = renderer.bounds.extents.z;
         var depth = xDim > zDim ? zDim : xDim;
 
         pivot = transform.position - RoomSize.center;
+        pivot = transform.position;
         pivot += pivot.normalized * depth / 2;
 
         if (zDim > xDim)
             pivot += new Vector3(0, 0, zDim);
         else
             pivot += new Vector3(-xDim, 0, 0);
-
-        if (transform.name.Contains("LEFT") || transform.name.Contains("BOTTOM"))
-            rotationDirection *= -1;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && canWalkIn && player.isMoving)
         {
-
+            StartCoroutine(WalkThroughDoor());
+            ManagerGame.instance.RenderNextRoom(doorLocation);
+            GetComponent<BoxCollider>().enabled = false;
         }
+    }
 
+    private IEnumerator WalkThroughDoor()
+    {
+        player.SetFixedDirection(transform.position - RoomSize.center);
+        player.isMoving = false;
+        SourceCage.isCageSourceActive = false;
+        SourceLight.isLightSourceActive = false;
+        yield return new WaitForSeconds(player.doorMoveDuration);
+        player.isMoving = true;
+        ManagerCamera.isRoomEnter = true;
+        // GameManager_V0.instance.room.CloseDoors();
     }
 
     public void Open()
@@ -53,7 +80,7 @@ public class ControllerDoor : MonoBehaviour
             canRotate = false;
             rotationDirection *= -1;
             doorState = DoorSate.MOVING;
-            StartCoroutine(ApplyRotate(DoorSate.OPEN));
+            StartCoroutine(ApplyRotate(DoorSate.OPEN, 2, true));
         }
     }
 
@@ -64,16 +91,16 @@ public class ControllerDoor : MonoBehaviour
             canRotate = false;
             rotationDirection *= -1;
             doorState = DoorSate.MOVING;
-            StartCoroutine(ApplyRotate(DoorSate.CLOSED));
+            StartCoroutine(ApplyRotate(DoorSate.CLOSED, 0.5f, false));
+            
         }
     }
 
-    IEnumerator ApplyRotate(DoorSate setState)
+    IEnumerator ApplyRotate(DoorSate setState, float scaleFactor, bool canWalk)
     {
         float angle = 0f;
         float elapsedTime = 0.0f;
         float rotationAngle = 90f;
-
         while (elapsedTime < rotationTime)
         {
             var nextAngle = Mathf.LerpAngle(0f, rotationAngle, elapsedTime / rotationTime);
@@ -84,7 +111,17 @@ public class ControllerDoor : MonoBehaviour
             yield return null;
         }
         transform.RotateAround(pivot, Vector3.up, rotationDirection * (rotationAngle - angle));
+        ModifyBoxCollider(scaleFactor);
         doorState = setState;
+        canWalkIn = canWalk;
         canRotate = true;
+    }
+
+    private void ModifyBoxCollider(float multiplier)
+    {
+        var boxCollider = GetComponent<BoxCollider>();
+        Vector3 newSize = boxCollider.size;
+        newSize.x *= multiplier;
+        boxCollider.size = newSize;
     }
 }

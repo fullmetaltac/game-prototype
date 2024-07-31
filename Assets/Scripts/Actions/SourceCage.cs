@@ -4,8 +4,8 @@ public class SourceCage : MonoBehaviour
 {
     public static bool isCageSourceActive = false;
 
-    private ControllerCage cage;
     private RaycastHit hit;
+    private ControllerCage cage;
     private Collider previousHitCollider;
     
     private float rayDistance = 30f;
