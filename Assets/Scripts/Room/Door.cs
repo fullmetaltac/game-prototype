@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Door : MonoBehaviour
@@ -53,5 +54,10 @@ public class Door : MonoBehaviour
                 mesh.GetComponent<ControllerDoor>().doorLocation = WallLocation.BOTTOM;
                 break;
         }
+    }
+
+    public void ToggleCollider(bool flag)
+    {
+        mesh.GetComponents<BoxCollider>().First(c => !c.isTrigger).enabled = flag;
     }
 }

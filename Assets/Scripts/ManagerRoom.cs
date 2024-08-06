@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Unity.VisualScripting;
+using System.Collections;
 
 public class ManagerRoom : MonoBehaviour
 {
@@ -106,6 +107,21 @@ public class ManagerRoom : MonoBehaviour
         furnitureTopRight.DeRender();
         furnitureBottomLeft.DeRender();
         furnitureBottomRight.DeRender();
+    }
+
+
+    public IEnumerator ToggleDoorsColliders(bool flag, Action callback = null)
+    {
+        yield return new WaitUntil(() => doorTop != null);
+        doorTop.ToggleCollider(flag);
+        yield return new WaitUntil(() => doorLeft != null);
+        doorLeft.ToggleCollider(flag);
+        yield return new WaitUntil(() => doorRight != null);
+        doorRight.ToggleCollider(flag);
+        yield return new WaitUntil(() => doorBottom != null);
+        doorBottom.ToggleCollider(flag);
+        
+        callback?.Invoke();
     }
 
 }

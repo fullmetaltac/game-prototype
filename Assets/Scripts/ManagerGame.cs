@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 public class ManagerGame : MonoBehaviour
 {
+    public ManagerRoom room;
     public WallLocation wallToHide;
     public HashSet<ManagerRoom> roomHistory;
 
     public static ManagerGame instance;
     public static Tuple<int, int> roomIndex { get; set; }
 
-    private ManagerRoom room;
 
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class ManagerGame : MonoBehaviour
         ManagerMap.InitMap();
         roomIndex = ManagerMap.center;
         room = this.AddComponent<ManagerRoom>();
+        StartCoroutine(room.ToggleDoorsColliders(true));
 
         wallToHide = WallLocation.BOTTOM;
 
@@ -61,11 +62,10 @@ public class ManagerGame : MonoBehaviour
 
     public void DeRenderRoom()
     {
-        roomHistory.ToList().ForEach(r => { 
-            if (r.roomIndex != roomIndex)
-            {
-                r.DeRenderAll();
-            } 
-        });
+        roomHistory
+            .ToList()
+            .Where(r => r.roomIndex != roomIndex)
+            .ToList()
+            .ForEach( r => r.DeRenderAll());
     }
 }

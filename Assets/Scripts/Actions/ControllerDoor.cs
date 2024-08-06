@@ -17,11 +17,13 @@ public class ControllerDoor : MonoBehaviour
     private Vector3 pivot;
     private DoorSate doorState;
     private bool canRotate = true;
+    private ManagerGame gameManager;
     private PlayerController player;
 
 
     private void Awake()
     {
+        gameManager = ManagerGame.instance;
         player = PlayerController.instance;
     }
 
@@ -56,7 +58,7 @@ public class ControllerDoor : MonoBehaviour
         {
             StartCoroutine(WalkThroughDoor());
             ManagerGame.instance.RenderNextRoom(doorLocation);
-            GetComponent<BoxCollider>().enabled = false;
+            //GetComponent<BoxCollider>().enabled = false;
         }
     }
 
@@ -69,8 +71,8 @@ public class ControllerDoor : MonoBehaviour
         yield return new WaitForSeconds(ManagerCamera.camRotateDelay);
         ManagerCamera.isRoomEnter = true;
         yield return new WaitForSeconds(player.doorMoveDuration);
+        StartCoroutine(gameManager.room.ToggleDoorsColliders(true, () => gameManager.DeRenderRoom()));
         player.isMoving = true;
-        ManagerGame.instance.DeRenderRoom();
     }
 
     public void Open()
