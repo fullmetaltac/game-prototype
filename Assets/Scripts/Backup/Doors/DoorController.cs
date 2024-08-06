@@ -15,19 +15,19 @@ public class DoorController : MonoBehaviour
     {
         if (other.name == "Player" && PlayerController.instance.isMoving)
         {
-            StartCoroutine(DoorAction());
-            GameManager_V0.instance.RenderNextRoom(doorType);
-            GetComponent<BoxCollider>().enabled = false;
+            //StartCoroutine(DoorAction());
+            //GameManager_V0.instance.RenderNextRoom(doorType);
+            //GetComponent<BoxCollider>().enabled = false;
         }
     }
 
     private IEnumerator DoorAction()
     {
-        PlayerController.instance.SetFixedDirection(moveDirection);
-        PlayerController.instance.isMoving = false;        
-        yield return new WaitForSeconds(TeleportUtil.teleportDuration);
-        PlayerController.instance.isMoving = true;
-        ManagerCamera.isRoomEnter = true;
-        GameManager_V0.instance.room.CloseDoors();
+        //PlayerController.instance.SetFixedDirection(moveDirection);
+        //PlayerController.instance.isMoving = false;        
+        yield return new WaitForSeconds(PlayerController.instance.doorMoveDuration);
+        //PlayerController.instance.isMoving = true;
+        //ManagerCamera.isRoomEnter = true;
+        //GameManager_V0.instance.room.CloseDoors();
     }
 }

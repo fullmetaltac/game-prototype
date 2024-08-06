@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using Unity.VisualScripting;
 using System.Collections.Generic;
@@ -6,12 +7,12 @@ using System.Collections.Generic;
 public class ManagerGame : MonoBehaviour
 {
     public WallLocation wallToHide;
+    public HashSet<ManagerRoom> roomHistory;
 
     public static ManagerGame instance;
     public static Tuple<int, int> roomIndex { get; set; }
 
     private ManagerRoom room;
-    private Queue<Tuple<int, int>> roomHistory;
 
     private void Awake()
     {
@@ -34,9 +35,7 @@ public class ManagerGame : MonoBehaviour
         var neighbors = ManagerMap.DefineNeighbors(roomIndex);
 
         wallToHide++;
-        roomHistory.Enqueue(roomIndex);
-        if (roomHistory.Count > 1)
-            roomHistory.Dequeue();
+        roomHistory.Add(room);
 
         switch (doorLocation)
         {
@@ -54,10 +53,19 @@ public class ManagerGame : MonoBehaviour
                 break;
         }
         newRoom = this.AddComponent<ManagerRoom>();
-        StartCoroutine(room.DeRenderAll());
         room = newRoom;
 
         if ((int)wallToHide == Enum.GetValues(typeof(WallLocation)).Length)
             wallToHide = 0;
+    }
+
+    public void DeRenderRoom()
+    {
+        roomHistory.ToList().ForEach(r => { 
+            if (r.roomIndex != roomIndex)
+            {
+                r.DeRenderAll();
+            } 
+        });
     }
 }

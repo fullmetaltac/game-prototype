@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 using Unity.VisualScripting;
-using System.Collections;
 
 public class ManagerRoom : MonoBehaviour
 {
+    public Tuple<int, int> roomIndex;
+
     private Bed bed;
     private Floor floor;
     private RoomSize roomSize;
@@ -30,6 +32,7 @@ public class ManagerRoom : MonoBehaviour
 
     private void Start()
     {
+        roomIndex = ManagerGame.roomIndex;
         LoadAll();
         RenderAll();
     }
@@ -61,7 +64,7 @@ public class ManagerRoom : MonoBehaviour
 
     private void RenderAll()
     {
-        roomSize.Calculate(ManagerGame.roomIndex);
+        roomSize.Calculate(roomIndex);
         floor.Render();
         bed.Render();
         doorTop.Render(roomSize, WallLocation.TOP);
@@ -83,9 +86,8 @@ public class ManagerRoom : MonoBehaviour
     }
         
 
-    public IEnumerator DeRenderAll()
+    public void DeRenderAll()
     {
-        yield return new WaitForSeconds(.5f);
         floor.DeRender();
         bed.DeRender();
         doorTop.DeRender();

@@ -39,7 +39,7 @@ public class Teleport : MonoBehaviour, IColorSubscriber
         {
             if (destination != null)
             {
-                StartCoroutine(TeleportAction());
+                // StartCoroutine(TeleportAction());
             }
         }
     }

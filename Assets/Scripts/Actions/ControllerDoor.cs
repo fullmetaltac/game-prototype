@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Net;
 
 
 public enum DoorSate
@@ -61,16 +60,17 @@ public class ControllerDoor : MonoBehaviour
         }
     }
 
-    private IEnumerator WalkThroughDoor()
+    IEnumerator WalkThroughDoor()
     {
         player.SetFixedDirection(transform.position - RoomSize.center);
         player.isMoving = false;
         SourceCage.isCageSourceActive = false;
         SourceLight.isLightSourceActive = false;
+        yield return new WaitForSeconds(ManagerCamera.camRotateDelay);
+        ManagerCamera.isRoomEnter = true;
         yield return new WaitForSeconds(player.doorMoveDuration);
         player.isMoving = true;
-        ManagerCamera.isRoomEnter = true;
-        // GameManager_V0.instance.room.CloseDoors();
+        ManagerGame.instance.DeRenderRoom();
     }
 
     public void Open()

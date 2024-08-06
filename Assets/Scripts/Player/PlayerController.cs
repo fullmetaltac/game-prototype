@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     //door move
     public bool isMoving = true;
     private Vector3 fixedDirection;
-    public float doorMoveDuration = 0.45f;
+    public float doorMoveDuration = 1f;
 
     // dash
     public float dashAmount = 3f;

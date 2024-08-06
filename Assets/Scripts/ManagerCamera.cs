@@ -9,12 +9,13 @@ public class ManagerCamera : MonoBehaviour
 
     public static ManagerCamera instance;
 
+    public static bool canRotate = true;
+    public static bool isRoomEnter = false;
+    public static float camRotateDelay = 0.45f;
+
     private float currentAngle;
     private float rotationTime = .5f;
     private int angularSpeed = 180; // deg per second
-
-    public static bool canRotate = true;
-    public static bool isRoomEnter = false;
 
     private void Awake()
     {
