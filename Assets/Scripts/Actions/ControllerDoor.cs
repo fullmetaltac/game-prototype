@@ -11,8 +11,8 @@ public class ControllerDoor : MonoBehaviour
     public float rotationTime = 1f;
     public int rotationDirection = 1;
     public WallLocation doorLocation;
+    public bool canWalkInDoor = false;
 
-    public static bool canWalkIn = false;
 
     private Vector3 pivot;
     private DoorSate doorState;
@@ -52,7 +52,7 @@ public class ControllerDoor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && canWalkIn && player.isMoving)
+        if (other.CompareTag("Player") && canWalkInDoor && player.isMoving)
         {
             StartCoroutine(WalkThroughDoor());
             ManagerGame.instance.RenderNextRoom(doorLocation);
@@ -91,8 +91,7 @@ public class ControllerDoor : MonoBehaviour
             canRotate = false;
             rotationDirection *= -1;
             doorState = DoorSate.MOVING;
-            StartCoroutine(ApplyRotate(DoorSate.CLOSED, 0.5f, false));
-            
+            StartCoroutine(ApplyRotate(DoorSate.CLOSED, 0.5f, false));            
         }
     }
 
@@ -113,7 +112,7 @@ public class ControllerDoor : MonoBehaviour
         transform.RotateAround(pivot, Vector3.up, rotationDirection * (rotationAngle - angle));
         ModifyBoxCollider(scaleFactor);
         doorState = setState;
-        canWalkIn = canWalk;
+        canWalkInDoor = canWalk;
         canRotate = true;
     }
 
